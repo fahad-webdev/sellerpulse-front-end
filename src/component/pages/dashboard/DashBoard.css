@@ -1,0 +1,376 @@
+.main-dashboard {
+    margin: 15px 15px;
+    /*background-color: aqua;*/
+    width: 97%;
+    height: 94%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dash-overview-back {
+    /*background-color: yellow;*/
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.overview-heading {
+    /*background-color: rgb(200, 52, 52);*/
+    margin: 0px 10px 10px;
+    display: inline-block;
+}
+
+.overview-heading h3 {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.dash-overview {
+    width: 98%;
+    height: 30%;
+    /*background-color: black;*/
+    display: flex;
+    gap: 10px;
+}
+.overview-cards {
+    flex:1;
+    background-image: linear-gradient(#113769, #0c1a3c);
+    color: white;
+    border-radius: 5px;
+    width: 28%;
+    margin:10px 0px;
+    padding: 10px;
+    cursor: pointer;
+    /*background-color: blue;*/
+    border: 1px solid #b1b0b0cd;
+    box-shadow: 0px 10px 20px rgba(84, 84, 84, 0.287),
+    10px 0px 20px rgba(90, 89, 89, 0.253);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-decoration: none;
+    overflow: hidden;
+}
+.overview-cards:hover{
+    background-image: linear-gradient(#1a4b8c, #14285b);
+}
+.overview-cards label {
+    font-size: 20px;
+    font-weight: 300;
+    margin-top:8px;
+}
+.overview-cards p {
+    font-size: 11px;
+    text-align: center;
+    color: rgb(220, 220, 220);
+}
+.overview-cards h1 {
+    font-size: 30px;
+    font-weight: 300;
+    margin: 5px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/*dashboard graph */
+.dash-graph {
+    /*background-color: aqua;*/
+    margin-left:2px;
+    width: 97%;
+    height: 67%;
+    border: 1px solid rgb(189, 189, 189);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    /*box-shadow: 0px 10px 20px rgba(84, 84, 84, 0.287),
+    10px 0px 20px rgba(90, 89, 89, 0.253);*/
+}
+.overview-graphs {
+    width: 90%;
+    height: 90%;
+    margin-top: 30px;
+    /*background-color: aqua;*/
+}
+/*select graph through options*/
+.graph-opt-back {
+    width: 100px;
+    margin:0px auto ;
+    height: 21px;
+    position: absolute;
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid rgba(171, 171, 171, 0.841);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: 0.3s ease;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.graph-opt-back-li-active {
+    background-color: rgb(34, 100, 187);
+    color: white;
+    text-decoration: none;
+    list-style: none;
+    font-size: 11px;
+    cursor: pointer;
+}
+.graph-opt-back-li {
+    text-decoration: none;
+    color: black;
+    list-style: none;
+    font-size: 11px;
+    cursor: pointer;
+}
+.graph-link{
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 400;
+    cursor: pointer;
+}
+.graph-cont {
+    background-image: linear-gradient(rgb(17, 55, 105), #0c1a3c);
+    color: white;
+    border-radius: 3px;
+}
+.graph-cont li {
+    list-style: none;
+    font-size: 12px;
+    padding: 2px;
+}
+.graph-cont li .graph-link {
+    color: white;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 400;
+}
+/*best selling product part*/
+.dash-product-back {
+    max-height: 100%;
+    width: 30%;
+    /*background-color: aqua;*/
+    border: 1px solid #abababcb;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+.product-heading h3{
+    margin:5px 0px ;
+    text-align: center;
+    font-size:20px;
+    font-weight: 600;
+    height: 10%;
+    /*background-color: aqua;*/
+}
+.scollable-container::-webkit-scrollbar{
+    display: none;
+}
+.scollable-container{
+    height: 430px;
+    width: 100%;
+    /*background-color: red;*/
+    overflow-y: scroll;
+    overflow-x:hidden;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+/*best selling product card*/
+.dash-product-card-back {
+    display: flex;
+    flex-direction: column;
+    margin:0px auto;
+    margin-top:20px;
+    box-sizing: border-box;
+    /*background-color: aqua;*/
+    width: 70%;
+    height: auto;
+    border-radius: 15px;
+    border: 1px solid rgb(214, 214, 214);
+    box-shadow: 0px 10px 20px rgba(84, 84, 84, 0.287),
+        10px 0px 20px rgba(90, 89, 89, 0.253);
+}
+.dash-product-card-img{
+    width:90%;
+    height:auto;
+    margin:15px auto;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.dash-product-detail{
+    /*background-color: yellow;*/
+    height: 100%;
+    width:90%;
+    margin:0px auto;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.sub-details{
+    border:none;
+    /*background-color: blue;*/
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+.sub-details label {
+    font-size:12px;
+    margin:3px 3px;
+    font-weight: 500;
+}
+.sub-details .detail-input {
+    text-align: center;
+    font-size: 12px;
+    /*background-color: aqua;*/
+}
+.detail-input{
+    border: none;
+    color:black;
+    /*background-color: pink;*/
+    font-weight: 500;
+}
+
+.read-more:hover{
+    background-image: linear-gradient(rgb(17, 55, 105), #0c1a3c);
+    color:white;
+    border:1px solid white;
+}
+#product-title{
+    width:100%;
+    /*background-color: #0c1a3c;*/
+    margin:3px 0px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+@media (min-width: 1368px) and (max-width: 1440px) {
+    .scollable-container{
+        height: 558px;
+    }
+    .overview-cards {
+        flex:1;
+    }
+    .overview-cards h1 {
+        font-size: 35px;
+    }
+    .overview-cards p {
+        font-size: 14px;
+    }
+    .dash-graph {
+        margin-left:5px ;
+        width:97%;
+    }
+    .graph-opt-back-li .graph-link,.graph-opt-back-li-active .graph-link{
+        font-size: 11px;
+        font-weight: 400;
+    }
+    .graph-cont li{
+        font-size: 11px;
+        margin:0px 3px;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    /* Styles for screens up to 1024px */
+    .overview-cards p {
+        font-size: 13px;
+    }
+    .overview-cards h1 {
+        font-size: 26px;
+    }
+    .dash-product-back {
+        width: 30%;
+    }
+    .sub-details .detail-input {
+        text-align: left;
+    }
+    .read-more{
+        width:100px;
+    }
+    .dash-graph {
+        width:95%;
+    }
+    .graph-opt-back-li ,.graph-opt-back-li-active {
+        font-size: 11px;
+    }
+    .scollable-container{
+        height:550px;
+    }
+}
+@media  (width<770px) {
+    .overview-heading h3 {
+        font-size: 14px;
+    }
+    .dash-product-back {
+        width: 32%;
+    }
+    .scollable-container{
+        height:580px;
+        /*background-color: yellow;*/
+    }
+    .dash-product-card-back {
+        margin: 10px;
+        font-size: 12px;
+        width: 90%;
+    }
+    .graph-opt-back {
+        width:70px;
+    }
+    .dash-overview-back {
+        width: 68%;
+        /*background-color: #ffff00;*/
+    }
+    .dash-overview {
+        height:24%;
+        width: 98%;
+        gap:3px;
+        /*background-color: #0c1a3c;*/
+    }
+    .overview-cards {
+        width:100px;
+    }
+    .overview-cards p {
+        font-size: 11px;
+    }
+    .overview-cards label {
+        font-size: 12px;
+    }
+    .overview-cards h1 {
+        font-size: 17px;
+    }
+    .sub-details .detail-input {
+        text-align: left;
+        font-size: 11px;
+    }
+    .read-more{
+        width:70%;
+        font-size: 11px;
+    } 
+   .graph-opt-back-li .graph-link,.graph-cont li .graph-link ,.graph-opt-back-li-active .graph-link {
+        font-size: 10px;
+    }
+    .graph-cont li {
+        height: 18px;
+    }
+    .dash-graph {
+        width:95%;
+        margin-left:5px;
+        height: 70%;
+    }
+    .main-dashboard {
+        width: 95%;
+        height: 96%;
+    }
+    /*best selling product responsiveness*/
+    .product-heading h3{
+        font-size:14px;
+    }
+}

@@ -1,0 +1,235 @@
+.main-guideline-back{
+    margin:10px;
+}
+.main-guideline{
+    /*background-color: yellow;*/
+    height:100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.main-guideline #main-guideline-heading{
+    /*margin-top:15px;
+    margin-left:15px;*/
+    margin:10px 15px;
+    font-weight: 600;
+    display:flex;
+    justify-content: space-between;
+    /*background-color: aqua;*/
+}
+.guideline-backbtn{
+    display:none;
+    font-size:14px;
+    padding:4px 10px;
+    border-radius: 5px;
+    border: 1px solid black;
+    margin-right:5px;
+    cursor:pointer;
+}
+.guideline-backbtn:hover{
+    background-image: linear-gradient(#1c59aa,#1c59aa);
+    border: 1px solid transparent;
+    color:white;
+    box-shadow: 0 0 10px rgb(118, 118, 118);
+
+}
+.main-guideline .main-guideline-scrollable{
+    /*background-color: aquamarine;*/
+    width: auto;
+    height: 400px;
+    padding:5px 10px;
+    overflow: scroll;
+}
+.main-guideline-scrollable ul{
+    display: block;
+}
+.main-guideline-scrollable::-webkit-scrollbar{
+    display: none;
+}
+.main-guideline-scrollable ul li{
+    list-style:none;
+    font-size:14px;
+    font-weight: 600;
+    border-bottom: 1px solid #b3b3b3;
+    padding:10px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom:5px;
+    background-color: white;
+}
+.guideline-expand{
+    width:16px;
+    margin:auto 10px;
+    transition: 0.3s;
+    transform: rotate(180deg);
+}
+.main-guideline-expand{
+    margin-top:5px;
+    height:39px;
+    width:auto;
+    /*background-color: rebeccapurple;*/
+    border:1px solid #b3b3b3;
+    border-radius: 5px;
+    transition: 0.3s;
+    overflow: hidden;
+    /*background-color: #dbebf1;*/
+}
+.main-guideline-expand:hover{
+    border:1px solid #696969;
+    box-shadow: 0px 10px 20px rgba(131, 131, 131, 0.287),
+        10px 0px 20px rgba(126, 126, 126, 0.253);
+}
+.guideline-expand-content{
+    display: flex;
+    flex-direction: column;
+    /*background-color: yellow;*/
+    margin-top:-5px;
+}
+.guideline-expand-content a{
+    text-decoration: none;
+    color:black;
+    border-bottom: 1px solid #b3b3b3;
+    padding:6px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.guideline-bullet-point{
+    width:15px;
+    height:auto;
+    margin:0px 5px;
+}
+/*Connect store to sellerpulse*/
+.connetstoreback ,.storecredentialsback ,.getApiback{
+    display: none;
+    margin:auto ;
+    box-sizing: border-box;
+    width:auto;
+    height:100%;
+    /*background-color:yellow;*/
+}
+.connetstoreback .connetstore, .storecredentialsback .storecredentials ,.getApiback .getApi{
+    /*background-color: aqua;*/
+    padding:0px 5px;
+}
+.connectstore-guidevideo{
+    margin:10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.connectstore-guidevideo h3{
+    margin-bottom:10px;
+    font-weight:600;
+}
+ .connectstore-heading ,.storecredentials-heading ,.getApi-heading{
+    /*background-color: pink;*/
+    margin-bottom:5px;
+}
+ .connectstore-heading h3 ,.storecredentials-heading h3 ,.getApi-heading h3{
+    font-size: 16px;
+    font-weight: 600;
+}
+.connectstoredetail {
+    display: flex;
+    flex-direction: column;
+}
+.connectstoredetail  ul ,.storecredentialsdetail ul ,.getApidetail ul{
+    margin-top:5px;
+    /*background-color: purple;*/
+   font-size: 14px;
+}
+.storecredentialsdetail ul{
+    margin-top:10px;
+}
+.connectstoredetail  ul li ,.storecredentialsdetail ul li {
+    display: flex;
+    justify-content:flex-start;
+    font-weight: 400;
+    background-color: transparent;
+    border:none;
+    margin:0px ;
+}
+.getApidetail{
+    /*background-color: yellow;*/
+    display: flex;
+}
+.getApidetail ul{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    text-align: left;
+    /*background-color: rebeccapurple;*/
+}
+.getApidetail ul h3{
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 5px;
+}
+.getApidetail ul li{
+    padding: 0px;
+   display: block;
+   border:none;
+    /*background-color: aqua;*/
+}
+.getApidetail ul li {
+    /*background-color: #696969;*/
+    margin:5px 0px;
+}
+.getApidetail ul li .getApi-subdetail{
+    /*background-color: pink;*/
+    margin-left:16px;
+}
+.getApidetail ul li .getApi-subdetail li{
+    border:none;
+    font-size: 14px;
+    font-weight: 400;
+    display: flex;
+    justify-content:flex-start;
+    align-items: center;
+}
+ strong{
+    font-weight: 600;
+    margin:0px 3px;
+}
+.connectstoredetail  ul li h3 ,.storecredentialsdetail ul li h3 ,.getApidetail ul li h3{
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+@media (width<770px){
+    .main-guideline .main-guideline-scrollable{
+        /*background-color: pink;*/
+        height:520px
+    }
+}
+@media (width>770px) and (width<1030px){
+    .main-guideline .main-guideline-scrollable{
+        /*background-color: purple;*/
+        height:550px
+    }
+}
+@media (width>1028px) and (width<1281px){
+    .main-guideline .main-guideline-scrollable{
+        /*background-color: blue;*/
+        height:550px
+    }
+}
+@media only screen and (width>1367px) and (width<1450px){
+    .main-guideline .main-guideline-scrollable{
+        /*background-color: yellow;*/
+        height:550px
+    }
+    .main-guideline-scrollable ul li{
+        font-size: 14px;
+    }
+    .main-guideline-expand{
+        margin:10px 0px;
+    }
+}

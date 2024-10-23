@@ -1,0 +1,396 @@
+.main-sales-back {
+    margin: 10px;
+    height: 96%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    /*background-color: palegoldenrod;*/
+}
+.main-sales-back .sales-scrollable{
+    /*background-color: aqua;*/
+    height: 93%;
+    border-radius: 10px;
+
+}
+.main-sales-back  .sales-scrollable .main-sales {
+    display: flex;
+    /*background-color: pink;*/
+    border-radius: 10px;
+    height: 100%;
+}
+
+.sales-overview-back {
+    /*background-color: aqua;*/
+    width: 65%;
+}
+.sales-overview-back #graph-for-small{
+    display: none;
+}
+.sales-analytics-back {
+    margin-left: 10px;
+    height: auto;
+    width: 34%;
+    border: 1px solid rgb(196, 196, 196);
+    border-radius: 10px;
+    margin-top: 10px;
+    overflow: hidden;
+    box-shadow: 0px 10px 20px rgba(84, 84, 84, 0.287),
+        10px 0px 20px rgba(90, 89, 89, 0.253);
+    /*background-color: yellow;*/
+}
+
+.sales-analytics-back h2 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 5px 25px;
+}
+
+.sales-analytics {
+    height: 90%;
+    /*background-color: aqua;*/
+    width: auto;
+}
+
+/*====================================================================================
+                    css styling for search filter drop down
+======================================================================================*/
+.main-sales-back .product-filter-back {
+    background-image: linear-gradient(rgb(230, 230, 230), rgb(246, 246, 246));
+    width: 400px;
+    height: 0px;
+    position: absolute;
+    top: 39px;
+    left: 35%;
+    z-index: 1;
+    overflow: hidden;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transition: 0.3s;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.331),
+        0 -4px 0 rgba(0, 0, 0, 0);
+    /*box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.172),
+                0 -4px 0 rgba(0, 0, 0, 0);*/
+
+}
+
+.sales-main-overview {
+    /*background-color: yellow;*/
+    width: 100%;
+    border-radius: 10px;
+    margin: 10px 0px;
+    height: 35%;
+    display: flex;
+    flex: 2;
+    gap: 20px;
+}
+
+.sales-main-overview .sales-overview {
+    /*background-color: aqua;*/
+    box-shadow: 0px 10px 20px rgba(84, 84, 84, 0.287),
+        10px 0px 20px rgba(90, 89, 89, 0.253);
+    width: 50%;
+    height: 100%;
+    border-radius: 10px;
+    border: 1px solid rgb(196, 196, 196);
+}
+
+.sales-main-overview .sales-overview h2 {
+    font-size: 14px;
+    font-weight: 600;
+    padding-top: 3px;
+    margin-left: 20px;
+    /*background-color: pink;*/
+}
+
+.sales-overview .sales-graphs-back {
+    /*background-color: blue;*/
+    display: flex;
+    justify-content: center;
+    width: 95%;
+    height: 75%;
+    margin: 10px auto;
+    display: flex;
+
+}
+
+.sales-graphs-back .sales-graphs {
+    width: 100%;
+    /*background-color: yellow;*/
+    display: flex;
+    justify-content: space-between;
+}
+
+.sales-graphs .sales-circle-graph {
+    /*background-color: aqua;*/
+    width: 60%;
+}
+
+.sales-stats {
+    /*background-color: yellow;*/
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.sales-stats p {
+    text-align: center;
+    margin: 0px 15px;
+    font-size: 35px;
+    /*background-color: antiquewhite;*/
+    width: 40%;
+}
+
+.sales-stats label {
+    text-align: center;
+    font-weight: 500;
+}
+
+.sales-overview {
+    /*background-color: yellow;*/
+    height: 100%;
+}
+
+/*========================================================
+                    Sales Table back/Boundary
+==========================================================*/
+.sales-product-back::-webkit-scrollbar {
+    display: none;
+}
+#individual-platform-table{
+    /*background-color: aqua;*/
+}
+#all-platform-table{
+    /*background-color: yellow;*/
+}
+#all-platform-table th:nth-child(3),
+#all-platform-table td:nth-child(3)
+{
+    width:18%;
+    /*background-color: pink;*/
+}
+#all-platform-table th:nth-child(4),
+#all-platform-table td:nth-child(4){
+    width:15%;
+}
+.main-sales-back .sales-product-back {
+    margin-top: 20px;
+    /*background-color: purple;*/
+    position: relative;
+    height: 251px;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid rgb(189, 189, 189);
+    overflow-y: scroll;
+    box-shadow: 0px 10px 20px rgba(84, 84, 84, 0.287),
+        10px 0px 20px rgba(90, 89, 89, 0.253);
+    /*box-shadow: 0px 10px 20px rgba(84, 84, 84, 0.287),
+        10px 0px 20px rgba(90, 89, 89, 0.253);*/
+}
+
+.inventory-product-table {
+    border: none;
+}
+
+.inventory-product-table .in-stock {
+    color: rgb(15, 141, 15);
+    font-weight: bold;
+    border: 1px solid rgb(15, 141, 15);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.inventory-product-table .out-of-stock,
+.inventory-product-table .no-product-message {
+    color: rgb(141, 15, 15);
+    font-weight: bold;
+    border: 1px solid rgb(141, 15, 15);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.inventory-product-table .no-product-message {
+    border: none;
+}
+
+/*========================================================================
+                            Media Query for responsiveness
+==========================================================================*/
+
+@media (width<770px) {
+    .main-sales-back .product-filter-back {/*css to set dropdown filter*/
+        top: 39.49px;
+        left: 25%;
+      }
+    .sales-scrollable::-webkit-scrollbar{
+        display: none;
+    }
+    .sales-scrollable .main-sales {
+        height: 100%;
+        /*background-color: aqua;*/
+    }
+    .main-sales-back  .sales-scrollable{
+        /*background-color: pink;*/
+        margin-top: 10px;
+        height: 560px;
+        overflow-y: scroll;
+        padding: 10px 0px;
+    }
+
+    .main-sales-back .sales-overview-back {
+        width: 95%;
+        margin:0px auto;
+        /*background-color: yellow;*/
+    }
+   
+    .sales-overview{
+        /*background-color: pink;*/
+    }
+    .sales-stats{
+        /*background-color: pink;*/
+        width: 50%;
+    }
+    .sales-stats p{
+        /*background-color: yellow;*/
+        width: 100%;
+        margin-top: 10px;
+        margin-left:0px ;
+        font-size: 22px;
+    }
+    .sales-graphs{
+        /*background-color: rebeccapurple;*/
+    }
+    .sales-graphs .sales-circle-graph {
+        /*background-color: yellow;*/
+        width: 70%;
+    }
+
+    .sales-overview-back #graph-for-small{
+        height: 400px;
+        width: auto;
+        margin-top: 20px;
+        margin-left: 0px;
+        /*background-color: aqua;*/
+        display:block;
+    }
+    .sales-analytics{
+        width:80%;
+        margin:0px auto;
+    }
+    .sales-main-overview {
+        gap:10px
+}
+    #graph-for-large{/*disable the large graph for small sreen size*/
+        display: none;
+    }
+
+/*css for making sales product tables responsive*/
+    .main-sales-back .sales-product-back {
+        height: 300px;
+    }
+    .inventory-product-table th:nth-child(7),
+    .inventory-product-table td:nth-child(7){
+        /*background-color: palegoldenrod;*/
+        width: 20%;
+    }
+}
+
+@media (width>770px) and (width<1030px) {
+    .main-sales-back .product-filter-back {/*css to set dropdown filter*/
+        top: 39.49px;
+        left: 25%;
+      }
+    .sales-scrollable::-webkit-scrollbar{
+        display: none;
+    }
+    .sales-scrollable .main-sales {
+        height: 100%;
+       /*background-color: aqua;*/
+       display: grid;
+       grid-template-columns: repeat(1, 1fr);
+       display: flex;
+       flex: 1;
+    }
+    .main-sales-back  .sales-scrollable{
+        /*background-color: pink;*/
+        margin-top: 10px;
+        height: 560px;
+        overflow-y: scroll;
+        padding: 10px 0px;
+    }
+
+    .main-sales-back .sales-overview-back {
+        width: 95%;
+        margin:0px auto;
+        /*background-color: yellow;*/
+    }
+    .sales-stats{
+        /*background-color: pink;*/
+        width: 50%;
+    }
+    .sales-stats p{
+        font-size: 22px;
+    }
+    .sales-graphs .sales-circle-graph {
+        /*background-color: yellow;*/
+        width: 70%;
+    }
+
+    .sales-overview-back #graph-for-small{
+        height: 400px;
+        width: auto;
+        margin-top: 20px;
+        margin-left: 0px;
+        /*background-color: aqua;*/
+        display:block;
+    }
+    .sales-analytics{
+        width:80%;
+        margin:0px auto;
+    }
+    .sales-main-overview {
+        gap:10px
+}
+    #graph-for-large{/*disable the large graph for small sreen size*/
+        display: none;
+    }
+
+/*css for making sales product tables responsive*/
+    .main-sales-back .sales-product-back {
+        height: 300px;
+    }
+    .inventory-product-table th:nth-child(7),
+    .inventory-product-table td:nth-child(7){
+        /*background-color: palegoldenrod;*/
+        width: 20%;
+    }
+}
+@media (width>1030px) and (width<1281px) {
+    .sales-scrollable .main-sales{
+        /*background-color: yellow;*/
+        height: 94%;
+        margin-top: 10px;
+    }
+    .sales-analytics{
+        height:80%;
+        margin:50px auto;
+    }
+    .main-sales-back .sales-product-back {
+        height: 335px;
+    }
+}
+@media (width>1367px) and (width<1441px) {
+    .sales-scrollable .main-sales{
+        /*background-color: yellow;*/
+        height: 94%;
+        margin-top: 10px;
+    }
+    .sales-analytics{
+        height:80%;
+        margin:50px auto;
+    }
+    .main-sales-back .sales-product-back {
+        height: 335px;
+    }
+}

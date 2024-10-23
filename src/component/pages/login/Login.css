@@ -1,0 +1,369 @@
+/* General Styles */
+.login-background {
+    height: 100vh;
+    width: 100vw;
+    box-sizing: border-box;
+    background-image: linear-gradient(120deg,
+        rgb(7, 26, 51) 0%,
+        rgb(2, 8, 16) 10%,
+        rgb(216, 216, 216) 10%,
+        rgb(211, 211, 211) 65%,
+        rgb(2, 8, 16) 65%,
+        rgb(2, 8, 16) 100%
+    );
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0px;
+}
+.password-container .login-input{
+      padding: 10px;  
+      font-family: Arial, sans-serif;    
+}
+.password-icon {
+    position: absolute;
+    right: 10px; /* Adjust as needed */
+    cursor: pointer;
+}
+
+.password-icon:hover {
+    color: #333;
+}
+.alert{
+    color:red;
+    font-size: 12px;
+    margin:0px 5px;
+    position: absolute;
+}
+.login-main {
+    position: absolute;
+    height: 80%;
+    width: 80%;
+    background-color: transparent;
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.566),
+        10px 0px 20px rgba(0, 0, 0, 0.515);
+    border-radius: 5px;
+}
+
+.login-form-main {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row; /* Ensures the layout remains in a row */
+}
+
+.login-image-back {
+    height: 100%;
+    width: 65%; /* Adjusted to 50% for a better balance */
+    background-color: black;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-image: linear-gradient(rgba(8, 35, 72, 0.764), rgba(3, 12, 37, 0.698)), url('../../../../public/login-background-wallpaper.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.login-about {
+    width: 80%;
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-about h2 {
+    color: white;
+    margin-left: 30px;
+}
+
+.login-about #heading-about {
+    margin-top: 30%;
+}
+
+.login-about p {
+    margin: 10px 30px;
+    font-size: 12px;
+    color: rgb(189, 189, 189);
+}
+
+.login-form-back {
+    background-color: white;
+    height: 100%;
+    width: 35%; /* Adjusted to 50% for a better balance */
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    text-align: center;
+}
+
+.login-form h2 {
+    font-weight: 700;
+    font-size: 16px;
+   /* Adjusted for better positioning */
+}
+
+.login-form {
+    width: 100%;
+    /*background-color: yellow;*/
+     /* Adjusted for better responsiveness */
+     margin: 40px auto;
+}
+
+.login-table {
+    /*background-color: aqua;*/
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 10px auto;
+    box-sizing: border-box;
+}
+
+.login-table tr {
+    width: 100%;
+    text-align: left;
+    /*background-color: yellow;*/
+    margin:0px auto;
+}
+.forgot-password-back {
+    /*background-color: aqua;*/
+    margin-top: 10px;
+    text-align: right;
+   
+}
+.forgot-password-back a{
+    margin-right: 30px;
+}
+.login-table tr a {
+    font-size: 10px;
+    margin-left: 10px;
+    color: rgb(89, 137, 226);
+}
+
+.login-table tr a:hover {
+    color: rgb(5, 74, 212);
+}
+
+.login-table .login-input {
+    outline-color: rgba(82, 180, 233, 0.778);
+    width: 315px; /* Increased width for larger input fields */
+    border: none;
+    padding: 10px;
+
+    background-color: transparent;
+    border-bottom: 1px solid rgb(164, 164, 164);
+    font-size: 14px; /* Increased font size */
+}
+.login-input::placeholder{
+    font-size: 12px;
+}
+.login-label {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0px 5px;
+    margin-top: 20px;
+}
+
+.login-btn-back .google-icon {
+    width: 20px;
+    margin: 0px 5px;
+    border-radius: 50%;
+}
+
+.login-table .login-btn-back {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Full width */
+    margin: 10px auto;
+}
+
+.login-btn-back .login-btn {
+    color: white;
+    background-image: linear-gradient(rgb(19, 62, 118), rgb(7, 26, 51));
+    padding: 8px 0px;
+    border: none;
+    border-radius: 20px;
+    margin: 3px 0px;
+    cursor: pointer;
+    font-size: 13px;
+    width: 100%; /* Full width */
+    transition: background-image 0.3s ease-in-out;
+}
+
+.login-btn-back .login-btn:hover {
+    background-image: linear-gradient(rgb(25, 81, 154), rgb(29, 71, 126));
+}
+
+#login-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(rgb(192, 35, 35), rgb(152, 25, 25));
+    width: 100%; /* Full width */
+}
+
+#login-btn:hover {
+    background-image: linear-gradient(rgb(255, 53, 53), rgb(192, 38, 38));
+}
+
+.login-register {
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.login-register a {
+    color: rgb(89, 137, 226);
+}
+
+.login-register a:hover {
+    color: rgb(5, 74, 212);
+}
+
+/* Media Queries */
+
+@media (width>770px) and (width< 1030px) {
+  
+    .login-image-back{
+        width: 60%;
+    }
+    .login-form-back{
+        width: 40%;
+    }
+    .login-about #heading-about {
+        margin-top: 40%;
+    }
+    .login-table .login-input {
+        width:260px;
+    }
+    .login-form h2 {
+        font-size: 20px;
+        margin-top: 20%;
+        margin-bottom: 40px;
+    }
+}
+@media (width>1030px) and (width<1281px) {
+    .login-main {
+        width: 80%;
+    }
+    .login-image-back{
+        width: 65%; /* Maintain 50-50 split */
+    }
+    .login-about #heading-about {
+        margin-top: 40%;
+    }
+    .login-form-back {
+        width:40%;
+    }
+    .login-form-back h2 {
+        margin-top: 25%;
+    }
+    .login-table {
+        /*background-color: yellow;*/
+    }
+}
+@media (width> 1367px) and (width<1442px){
+ 
+    .login-table .login-input {
+        width:335px;
+    }
+    .login-main {
+        width:80%;
+    }
+    .login-image-back {
+        width:65%;
+    }
+    .login-form-back {
+        width:35%;
+        /*background-color: aqua;*/
+    }
+    .login-about #heading-about {
+        margin-top: 40%;
+    }
+    .login-form h2 {
+        font-size: 20px;
+        margin-top: 20%;
+        margin-bottom: 20px;
+    }
+    .login-table {
+        width: 92%;
+        /*background-color: yellow;*/
+    }
+    .login-table .login-input {
+        width:320px;
+    }
+}
+
+@media (max-width: 992px) {
+    .login-main {
+        width: 95%;
+        height: 85%;
+    }
+    .login-image-back,
+    .login-form-back {
+        width: 50%; /* Maintain 50-50 split */
+    }
+    .login-form-back h2 {
+        margin-top: 8%;
+    }
+}
+
+@media (width<770px) {
+    .login-about #heading-about {
+        margin-top: 40%;
+    }
+    .login-main {
+        width: 90%;
+        height: 80%;
+    }
+    .login-image-back {
+        width: 55%; /* Ensure the image remains visible */
+    }
+    .login-form-back {
+        width: 45%; /* Ensure the form remains balanced */
+    }
+    .login-form h2 {
+        margin-top: 30%;
+    }
+    .login-btn-back .login-btn {
+        width: 100%; /* Full width */
+    }
+    #login-btn {
+        width: 100%; /* Full width */
+    }
+    .login-table .login-input {
+        width:250px;
+    }
+}
+
+@media (max-width: 576px) {
+    .login-main {
+        width: 100%;
+        height: 95%;
+    }
+    .login-form-back h2 {
+        margin-top: 3%;
+        font-size: 14px;
+    }
+    .login-table tr a {
+        font-size: 8px;
+    }
+    .login-btn-back .login-btn {
+        font-size: 12px;
+        padding: 6px 0px;
+    }
+    #login-btn {
+        font-size: 12px;
+        padding: 6px 0px;
+    }
+    .login-register {
+        font-size: 8px;
+    }
+}

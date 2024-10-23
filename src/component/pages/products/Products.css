@@ -1,0 +1,511 @@
+.main-product-back {
+    display: block;
+    margin: 10px;
+    height: 95%;
+    /*background-color: grey;*/
+}
+
+.main-product-back .product-filter-back {
+    background-image: linear-gradient(rgb(230, 230, 230), rgb(246, 246, 246));
+    width: 400px;
+    height: 0px;
+    position: absolute;
+    top: 39px;
+    left: 35%;
+    z-index: 1;
+    overflow: hidden;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transition: 0.3s;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.331),
+        0 -4px 0 rgba(0, 0, 0, 0);
+    /*box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.172),
+              0 -4px 0 rgba(0, 0, 0, 0);*/
+
+}
+
+.product-filter-back .filter-search-back {
+    margin: 20px;
+    /*background-color: aqua;*/
+    display: flex;
+    justify-content: center;
+}
+
+.filter-search-back .filter-search-input {
+    width: 280px;
+    padding: 6px;
+    font-size: 12px;
+    margin-right: 8px;
+    border-radius: 5px;
+    outline-color: rgba(129, 176, 223, 0.615);
+    border: 1px solid rgba(153, 153, 153, 0.748);
+}
+
+.filter-search-input::placeholder {
+    color: rgb(164, 164, 164);
+}
+
+.filter-search-back .filter-search-btn {
+    padding: 6px 8px;
+    border-radius: 5px;
+    border: none;
+    font-size: 12px;
+    color: white;
+    border: none;
+    background-image: linear-gradient(#113769, #0c1a3c);
+    cursor: pointer;
+}
+
+/*=========================================================
+                    main platform options
+===========================================================*/
+.main-product-back .product-main-overview-back {
+    display: flex;
+    justify-content: space-between;
+    /*background-color: red;*/
+    width: 100%;
+}
+
+.platform-filter-btn,
+.platform-name {
+    border-radius: 5px;
+    padding: 0px 15px;
+    font-size: 12px;
+    border: none;
+    color: white;
+    background-image: linear-gradient(#113769, #0c1a3c);
+    cursor: pointer;
+}
+
+.filter-search-btn:hover {
+    background-image: linear-gradient(#1c59aa, #1c59aa);
+}
+
+.product-main-overview {
+    /*background-color: aqua;*/
+    display: flex;
+    justify-content: space-between;
+    width: 65%;
+}
+
+.product-main-overview h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 5px 15px;
+    /*background-color: yellow;*/
+}
+
+.product-platform-option {
+    /*background-color: yellow;*/
+    display: flex;
+    gap: 15px;
+}
+
+.platform-name {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 2px 10px;
+}
+
+.main-product-back .product-card-back-scroll {
+    /* background-color: grey;*/
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.main-product-back .product-card-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+/*show number of total products fetch*/
+.product-result {
+    color: rgb(141, 141, 141);
+    border: none;
+    font-weight: 400;
+    margin: 2px 38px;
+    /*background-color: yellow;*/
+    float: right;
+    text-align: right;
+}
+
+.product-card-scroll {
+    width: auto;
+    height: 390px;
+    overflow-y: scroll;
+    /*background-color: #113769;*/
+    /*border: 1px solid rgb(175, 175, 175);*/
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    padding: 10px;
+    margin: auto;
+    gap: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+/*===========================================================
+                CSS styling for products card
+=============================================================*/
+.product-card-back {
+    text-decoration: none;
+    color:black;
+    padding: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    width: 190px;
+    height: 300px;
+    background-color: white;
+    box-sizing: border-box;
+    outline: 1px solid rgb(225, 225, 225);
+    transition: 0.3s;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0px 10px 20px rgba(84, 84, 84, 0.266),
+        10px 0px 20px rgba(90, 89, 89, 0.157);
+}
+
+.product-card-back:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 10px 20px rgba(84, 84, 84, 0.287),
+        10px 0px 20px rgba(90, 89, 89, 0.376);
+}
+.product-rating{
+    /*background-color: pink;*/
+  
+}
+
+.product-card #heading {
+    font-weight: 600;
+    font-size: 14px;
+    width: 80%;
+    /*background-color: yellow;*/
+    word-wrap: break-word;
+}
+
+.product-card p {
+    width: 85%;
+    font-size: 12px;
+    margin: 0px 10px;
+}
+
+.product-card-img {
+    width: 90%;
+    height: 60%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.product-card h3 {
+    font-weight: 600;
+    font-size: 16px;
+}
+.loader {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 45%;
+    top: 40%;
+    border: 14px solid #3498db;
+    /* Light grey */
+    border-top: 14px solid white;
+    /* Blue */
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    animation: spin 2s linear infinite;
+}
+
+/*css code for styling add product form */
+.main-add-product-back {
+    /*background-image: linear-gradient(rgba(41, 41, 41, 0.45),rgba(0, 0, 0, 0.607));*/
+    background-image: linear-gradient(300deg, rgb(2, 8, 16) 76.5%, #e7e7e7 23.5%);
+    display: none;
+    border-radius: 10px;
+    margin: auto;
+    box-sizing: border-box;
+    width: auto;
+    height: 100%;
+}
+
+.platform-logo-back {
+    /*background-color: yellow;*/
+    width: 22%;
+    height: 85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.platform-logo-back h3 {
+    font-style: italic;
+    font-weight: 700;
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.82);
+}
+
+.platform-logo-back .platform-logo {
+    width: 120px;
+}
+
+.main-product-back-btn {
+    background-color: rgb(165, 165, 165);
+    border-radius: 50%;
+    width: 40px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.add-product-form-back {
+    /*background-color: aqua;*/
+    border: 1px solid rgb(80, 80, 80);
+    border-radius: 10px;
+    height: 80%;
+    width: 64%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 54%;
+    left: 64%;
+}
+
+.add-product-heading {
+    /*background-color: yellow;*/
+    height: 10%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.add-product-heading h3 {
+    font-weight: 600;
+    color: white;
+}
+
+.add-product-form {
+    /*background-color: grey;*/
+    height: auto;
+    width: auto;
+    padding: 15px;
+}
+
+.add-product-form-half-back {
+    display: flex;
+    width: 100%;
+}
+
+.add-product-form-half1 {
+    /*background-color: yellow;*/
+    width: 50%;
+    padding: 0px 10px;
+}
+
+.add-product-form-half1 .description {
+    width: 96%;
+    height: 50%;
+    padding: 3px;
+    outline-color: rgba(129, 176, 223, 0.615);
+
+}
+
+.add-product-form-half2 {
+    /*background-color: aqua;*/
+    width: 50%;
+}
+
+.add-product-form-half-back label {
+    font-weight: 400;
+    font-size: 12px;
+    color: white;
+    margin-top: 5px;
+}
+
+.add-product-form-input {
+    width: 95%;
+    margin: 0px auto;
+    border-radius: 5px;
+    border: 1px solid grey;
+    font-size: 12px;
+    padding: 6px;
+    outline-color: rgba(129, 176, 223, 0.615);
+}
+
+.add-product-form-input::placeholder {
+    font-size: 12px;
+}
+
+.add-product-form-btn-back {
+    /*background-color: rebeccapurple;*/
+    padding: 0px 5px;
+
+}
+
+.add-product-form-back .add-product-form-btn {
+    width: 60px;
+    padding: 5px 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: none;
+    margin: 0px 5px;
+    background-image: linear-gradient(#1d5eb3, #14295f);
+    color: white;
+    cursor: pointer;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@media (width<770px) {
+    .product-platform-option {
+        margin: 0px 50px;
+    }
+
+    .main-product-back .product-filter-back {
+        top: 39.49px;
+        left: 25%;
+    }
+
+    .main-product-back .product-card-scroll {
+        width: 97%;
+        gap: 6px;
+        height: 560px;
+        /*background-color: aqua;*/
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .product-crud-btn-back {
+        margin-left: 0px;
+    }
+
+    .product-result {
+        margin: 0px 5px;
+    }
+
+    .main-add-product-back {
+        background-image: linear-gradient(300deg, rgb(2, 8, 16) 77.5%, #e7e7e7 22.5%);
+    }
+
+    .add-product-form-back {
+        top: 50%;
+        height: 78%;
+    }
+
+    .platform-logo-back {
+        height: 92%;
+    }
+
+    .platform-logo-back h3 {
+        color: white;
+        margin-top: 15px;
+    }
+
+}
+
+@media (width>770px) and (width<1030px) {
+    .main-product-back .product-card-scroll {
+        /*background-color: rebeccapurple;*/
+        height: 535px;
+        width: 98%;
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .main-product-back .product-filter-back {
+        top: 39.49px;
+        left: 30%;
+    }
+
+    .product-result {
+        margin: 0px 5px;
+    }
+
+    .product-crud-btn-back {
+        margin-left: 0px;
+    }
+
+    .main-add-product-back {
+        background-image: linear-gradient(300deg, rgb(2, 8, 16) 77.5%, #e7e7e7 22.5%);
+    }
+
+    .add-product-form-back {
+        top: 52.5%;
+        height: 82%;
+    }
+
+    .platform-logo-back {
+        height: 92%;
+        width: 25%;
+    }
+
+    .platform-logo-back h3 {
+        color: white;
+        margin-top: 15px;
+        margin-left: 20px;
+    }
+}
+
+@media (width>1028px) and (width<1281px) {
+    .main-product-back .product-card-scroll {
+        width: 98%;
+        gap: 10px;
+        height: 535px;
+        /*background-color: aqua;*/
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .product-result {
+        margin: 0px 5px;
+    }
+
+    .product-crud-btn-back {
+        margin-left: 0px;
+    }
+
+    .add-product-form-back {
+        top: 52.5%;
+        height: 82%;
+    }
+}
+
+@media only screen and (width>1367px) and (width<1450px) {
+    .main-product-back .product-card-scroll {
+        width: 99%;
+        gap: 10px;
+        height: 535px;
+        /*background-color: aqua;*/
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .main-product-back .product-filter-back {
+        top: 39.49px;
+        left: 37%;
+    }
+
+    .product-result {
+        margin: 0px 15px;
+    }
+
+    .product-crud-btn-back {
+        margin-left: 5px;
+    }
+
+    .add-product-form-back {
+        top: 52.5%;
+        height: 82%;
+    }
+}
