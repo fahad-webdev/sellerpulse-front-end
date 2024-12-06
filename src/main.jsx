@@ -17,6 +17,11 @@ import Login from "./component/pages/login/Login";
 import Home from "./component/pages/home/Home";
 import ProductReviews from "./component/pages/products/ProductReviews/ProductReviews";
 import UpdateProduct from "./component/pages/products/UpdateProduct/UpdateProduct.jsx";
+import PageNotFound from "./component/pages/pagenotfound/PageNotFound.jsx";
+import PrivacyPolicy from "./component/pages/privacy-policy/PrivacyPolicy.jsx";
+import Accepted from "./component/pages/auth/accepted.jsx";
+import Rejected from "./component/pages/auth/rejected.jsx";
+
 import * as ReactDOM from "react-dom/client";
 
 import {
@@ -24,6 +29,7 @@ import {
   RouterProvider,
   Navigate,
 } from "react-router-dom";
+import PrivacyPolicy from "./component/pages/privay-policy/PrivacyPolicy.jsx";
 
 
 const ProtectedRoute = ({ children }) => {
@@ -108,6 +114,22 @@ const router = createBrowserRouter([
         element:<UpdateProduct/>,
       },
     ],
+  },
+  {
+    path:'/privacy-policy',
+    element:<PrivacyPolicy/>,
+  },
+  {
+    path:'/auth/accepted',
+    element: <Accepted/>,
+  },
+  {
+    path:'/auth/rejected',
+    element: <Rejected/>,
+  },
+  {
+    path:'*',
+    element:<PageNotFound/>,
   },
 ]);
 

@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from "react";
 import "./Signup.css";
+import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const signup = () => {
   const [formValues, setFormValues] = useState({
-    name:"",
+    username:"",
     email: "",
     password: "",
   });
-
   const [formErrors, setFormErrors] = useState({
-    name:"",
+    username:"",
     email: "",
     password: "",
   });
 
+  const [message , setmessage] = useState({
+    success:false,
+    danger:false,
+    alert:false,
+  });
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const [showError, setShowError] = useState({
-    name:false,
+    username:false,
     email: false,
     password: false,
   });
@@ -27,7 +32,10 @@ const signup = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
+    setFormValues({ 
+      ...formValues,//for previous state value
+       [name]: value //this will make value change dynamically
+      });
   };
 
   const togglePasswordVisibility = () => {
@@ -37,14 +45,14 @@ const signup = () => {
   const validate = () => {
     let errors = {};
     let showError = {
-      name:false,
+      username:false,
       email: false,
       password: false,
     };
     //showing error for empty name field
-    if(!formValues.name){
-      errors.name = <div className="alert">Name is required</div>;
-      showError.name = true;
+    if(!formValues.username){
+      errors.username = <div className="alert">Name is required</div>;
+      showError.username = true;
     }
 
     //showing error for empty email field
@@ -68,10 +76,33 @@ const signup = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      navigate("/Login");
+      try {
+        const URL = "http://localhost:5000/api/auth/register";
+        const response = await axios.post(URL,formValues,
+          {
+            headers:{
+              "Content-Type":"application/json",
+            }
+          }
+        );
+        if(response.ok){//response is ok=true?
+          setFormValues({
+            username:"",
+            email:"",
+            password:"",
+          });
+        }
+        console.log(response);
+        setmessage({success:true});
+       // alert("Registration successful");
+        
+      } catch (error) {
+        setmessage({success:false});
+        console.log("Registration failed", error);
+      }
       console.log("Form submitted successfully", formValues);
     }
   };
@@ -99,6 +130,16 @@ const signup = () => {
     <>
       <div className="signup-background"></div>
       <div className="signup-main">
+        {/*Alert for product creation*/}
+    {message.success &&  <div className="shopify-alert-back" id="signup-alert-back">
+    <img src="../../../public/tick.png" alt="" className="alert-logo" />
+    <h3 className="shopify-alert">
+      <strong>Success! </strong>
+      Registration successful
+    </h3>
+    <img src="../../../public/close.png" alt="" className="close-logo" onClick={()=>{setmessage(false);navigate("/Login");
+}}/>
+  </div>}
         <div className="signup-form-main">
           <div className="signup-image-back">
             <div className="signup-about">
@@ -140,10 +181,10 @@ const signup = () => {
                       <label className="signup-label">Name</label>
                       <input
                         type="text"
-                        name="name"
+                        name="username"
                         className="signup-input"
                         placeholder="Enter your name"
-                        value={formValues.name}
+                        value={formValues.username}
                         onChange={handleInputChange}
                       />
                       {formErrors.name && (

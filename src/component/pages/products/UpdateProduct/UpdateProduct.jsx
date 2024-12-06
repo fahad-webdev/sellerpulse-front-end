@@ -46,7 +46,7 @@ const UpdateProduct = () => {
         <div className="platform-logo-back">
           <img
             src={platform_logo}
-            alt=""
+            alt="platform icon image"
             className="platform-logo"
           />
           <img

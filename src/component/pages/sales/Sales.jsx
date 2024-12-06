@@ -8,9 +8,9 @@ import "./Sales.css";
 const Sales = () => {
   //================================= Hooks=================================
   const [selectedPlatform, setSelectedPlatform] = useState(
-    "All",
     "shopify",
-    "daraz"
+    "daraz",
+    "All",
   );
   const [filterOpen, setFilterOpen] = useState("close");
   const [products, setProducts] = useState([]);
@@ -53,7 +53,7 @@ const Sales = () => {
   const fetchProducts = async () => {
     setLoading(true);
     let PlatformProduct = [];
-    const shopifyUrl = "https://dummyjson.com/products/search?q=phone";
+    const shopifyUrl = "http://localhost:5000/api/auth/shopify-products";
     const darazUrl = "https://dummyjson.com/products/search?q=all";
 
     try {
@@ -105,7 +105,7 @@ const Sales = () => {
     let url = "https://dummyjson.com/products";
 
     if (selectedPlatform === "shopify") {
-      url = "https://dummyjson.com/products/search?q=phone";
+      url = "http://localhost:5000/api/auth/shopify-products";
     } else if (selectedPlatform === "daraz") {
       url = "https://dummyjson.com/products/search?q=all";
     }
@@ -289,35 +289,34 @@ const Sales = () => {
                       <th>IMAGE</th>
                       <th>CATEGORY</th>
                       <th>TITLE</th>
-                      <th>BRAND</th>
+                      <th>VENDOR</th>
                       <th>PRICE</th>
                       <th>QTY</th>
                       <th>STATUS</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {products && products.length > 0 ? (
+                    {filteredProducts && filteredProducts.length > 0 ? (
                       filteredProducts.map((product, index) => (
                         <tr key={index}>
                           <td>
                             <img
-                              src={product.thumbnail}
+                              src={product.image?.src}
                               alt={product.title}
                               className="inventory-product-image"
                             />
                           </td>
-                          <td>{product.category}</td>
+                          <td>{product.product_type}</td>
                           <td>{product.title}</td>
-                          <td>{product.brand}</td>
-                          <td>{product.price}</td>
-                          <td>{product.stock}</td>
+                          <td>{product.vendor}</td>
+                          <td>{product.variants && product.variants.length>0 ?
+                          (<p> RS. {product.variants[0].price} </p>):
+                          (<p>${product.price}</p>)}</td>
+                          <td>{product.variants && product.variants.length>0 ?
+                          (<p> {product.variants[0].sku} </p>):""}</td>
                           <td>
-                            <span
-                              className={
-                                product.stock > 0 ? "in-stock" : "out-of-stock"
-                              }
-                            >
-                              {product.stock > 0 ? "In Stock" : "Out of Stock"}
+                            <span className={product.variants[0].sku > 0 ? "in-stock" : "out-of-stock"}>
+                              {product.variants[0].sku > 0 ? "In Stock" : "Out of Stock"}
                             </span>
                           </td>
                         </tr>
@@ -346,7 +345,7 @@ const Sales = () => {
                       <th>IMAGE</th>
                       <th>CATEGORY</th>
                       <th>TITLE</th>
-                      <th>BRAND</th>
+                      <th>VENDOR</th>
                       <th>PRICE</th>
                       <th>QTY</th>
                       <th>PLATFORM</th>
@@ -354,7 +353,7 @@ const Sales = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {products && products.length > 0 ? (
+                    {filteredProducts && filteredProducts.length > 0 ? (
                       filteredProducts.map((product, index) => (
                         <tr key={index}>
                           <td>

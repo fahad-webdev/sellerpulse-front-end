@@ -135,7 +135,35 @@
   color: white;
   cursor: pointer;
 }
-
+.shopify-alert-back,.signup-alert-back{
+  height:50px;
+  width:92%;
+  z-index: 1;
+  position:fixed;
+  border-radius: 10px;
+  background-color: rgb(155, 241, 165);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.shopify-alert-back .shopify-alert{
+  font-size: 18px;
+  color:#0d4f22;
+}
+.shopify-alert-back .alert-logo{
+  width:30px;
+  height: auto;
+  margin:0px 10px;
+}
+.close-logo{
+  width:23px;
+  margin:0px 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.close-logo:hover{
+  transform: scale(1.1);
+}
 /*====================================================================================
                     css styling for search filter drop down
 ======================================================================================*/

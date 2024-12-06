@@ -53,6 +53,14 @@
     border-radius: 5px;
 }
 
+/*=====================================================================
+Success Alert message 
+=======================================================================*/
+#signup-alert-back{
+    /*background-color:pink;*/
+    width: 100%;
+    border-radius: 5px;
+}
 .signup-form-main {
     height: 100%;
     width: 100%;

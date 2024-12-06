@@ -13,12 +13,6 @@ const Navbar = () => {
   const [updateEmail, setupdateEmail] = useState("fahadpervaiz2001@gmail.com");
   const [updateBtn, setupdateBtn] = useState(true);
 
-
-  const platform = {
-      name,
-  }
- 
-
   //Variable 
  
   //functions

@@ -52,7 +52,7 @@
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     border-right: 1px solid rgb(189, 189, 189);
-
+    overflow: hidden;
 }
 
 .productreviews-image-back h3 {
@@ -67,6 +67,9 @@
     margin-top: 10px;
     font-size: 16px;
     font-weight: 500;
+    /*background-color: yellow;*/
+    position: fixed;
+    bottom:50px;
 }
 
 .productreviews-image-back h2 h1 {
@@ -83,7 +86,7 @@
 .main-product-reviews .productreviews-image {
     margin-top: 20px;
     border: 1px solid rgb(198, 198, 198);
-    width: 80%;
+    width:170px;
 }
 
 /*
@@ -95,8 +98,11 @@
     /*background-color: aqua;*/
     width: 35%;
     border-right: 1px solid rgb(211, 211, 211);
+    overflow: scroll;
 }
-
+.productreviews-details-back::-webkit-scrollbar{
+    display:none;
+}
 .productreviews-details-back h3 {
     padding: 6px 10px;
     font-weight: 500;
@@ -105,11 +111,9 @@
 
 .productreviews-details-back .productreviews-details {
     margin: 0px 10px;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
     /*background-color: palegoldenrod;*/
-    height: auto;
+    height: 95%;
 }
 
 .rating-logo {

@@ -181,7 +181,9 @@
     /*background-color: pink;*/
   
 }
-
+.product-card{
+    height: 100%;
+}
 .product-card #heading {
     font-weight: 600;
     font-size: 14px;
@@ -197,7 +199,7 @@
 }
 
 .product-card-img {
-    width: 90%;
+    width: auto;
     height: 60%;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;

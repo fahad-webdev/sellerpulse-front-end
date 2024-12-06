@@ -31,7 +31,7 @@ const Products = () => {
       setLoading(true);
 
       let platformProducts = [];
-      const shopify = "https://dummyjson.com/products/search?q=phone";
+      const shopify = "http://localhost:5000/api/auth/shopify-products";
       //"https://dummyjson.com/products/search?q=phone";
       const daraz = "https://dummyjson.com/products/search?q=all";
 
@@ -67,7 +67,7 @@ const Products = () => {
 
           platformProducts = [...shopifyproducts, ...darazproducts];
         }
-
+        console.log(platformProducts);
         setProducts(platformProducts);
         setFilteredProducts(platformProducts);
         setProductsCount(platformProducts.length);
@@ -85,7 +85,7 @@ const Products = () => {
     const filtered = products.filter(
       (product) =>
         product.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.category?.toLowerCase().includes(searchTerm.toLowerCase())
+        (product.category||product.product_type)?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredProducts(filtered);
     setProductsCount(filtered.length);
@@ -202,20 +202,31 @@ const Products = () => {
           </label>
           <div className="product-card-scroll">
             {filteredProducts.map((product) => (
-               <NavLink to={`/Navbar/Products/${product.id}`} 
-               state={{platform_logo:product.platform.logo,platform_name:product.platform.name
-               }}
-               className="product-card-back">
-               <div className="product-card">
-             <img className='product-card-img' src={product.thumbnail} alt={product.title} />
-            
-             <p id='heading'>{product.title}</p>
-             <p className="product-rating"><p>Rating: {product.rating}</p></p>
-             <p>Price: ${product.price}</p>
-             <p>Category: {product.category}</p>
-             <p>Platform: {product.platform.name}</p>
-             </div>
-             </NavLink>
+              <NavLink
+                to={`/Navbar/Products/${product.id}`}
+                state={{//state is a prop that will allow us to send data through link
+                  platform_logo: product.platform.logo,
+                  platform_name: product.platform.name,
+                }}
+                className="product-card-back"
+                key={product.id}
+              >
+                <div className="product-card">
+                  <img
+                    className="product-card-img"
+                    src={(product.image?.src)||(product.thumbnail)}
+                    alt={product.title}
+                  />
+                  <p id="heading">{product.title}</p>
+                  <p className="product-rating">Rating: {product.rating}</p>
+                  {product.variants && product.variants.length > 0 ? (
+                    <p>Price: ${product.variants[0].price}</p>
+                  ) :
+                  (<p>Price: ${product.price}</p>)}
+                  <p>Category: {product.product_type}</p>
+                  <p>Platform: {product.platform.name}</p>
+                </div>
+              </NavLink>
             ))}
           </div>
         </div>

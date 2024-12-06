@@ -7,15 +7,16 @@ const ProductReviews = () => {
   const [Products, setProducts] = useState(null);
   const [Loading, setLoading] = useState(false);
   const [Reviews, setReviews] = useState([]);
-  const location = useLocation();
-  const {platform_logo , platform_name} = location.state || {};
-  const { id } = useParams(); //hook from react router dom
-
+  //hook from react router dom
+  const {id} = useParams();//we use useParams hook to get id
+  const location = useLocation();//useLocation hook will allow us to send desire credentials from one component to another through react router dom 
+  const {platform_name , platform_logo} = location.state || {};
   //Variables
   const shopify_logo = "../../../public/Shopify-Logo.png";
   const daraz_logo = "../../../public/Daraz-logo-3.png";
-  const productUrl = `https://dummyjson.com/products/${id}`;
-  const reviewUrl = `https://dummyjson.com/products/${id}?reviews`;
+  const productUrl = `http://localhost:5000/api/auth/shopify-products/${id}`;
+                     
+  //const reviewUrl = `https://dummyjson.com/products/${id}?reviews`;
 
 
   //Functions
@@ -25,9 +26,10 @@ const ProductReviews = () => {
     //this function we used to fetch data from api
     setLoading(true);
     try {
-      const response = await fetch(`${productUrl}`);
+      const response = await fetch(productUrl);
       const data = await response.json();
       setProducts(data);
+      console.log(data);
       console.log("fetch product data", data);
     } catch (error) {
       console.log("error loading products ", error);
@@ -51,7 +53,7 @@ const ProductReviews = () => {
   useEffect(() => {
     FetchSingleProducts();
     FetchReviews();
-  }, []);
+  }, [id]);
   if (!Products) return <div></div>;
   if (Loading) return <div className="loader"></div>;
 
@@ -74,7 +76,7 @@ const ProductReviews = () => {
         <div className="productreviews-image-back">
           <h3>Image</h3>
           <img
-            src={Products.thumbnail}
+            src={Products.image?.src}
             alt=""
             className="productreviews-image"
           />
@@ -94,58 +96,20 @@ const ProductReviews = () => {
            <p>{Products.title}</p> <p><img src="../../../public/star.png" alt="" className="rating-logo" />{Products.rating} </p>
            </div>
             <h2>Description:</h2>
-            <p>{Products.description}</p>
+            <p>{Products.body_html}</p>
             <h2>Category:</h2>
-            <p>{Products.category}</p>
-            <h2>Brand:</h2>
-            <p>{Products.brand}</p>
+            <p>{Products.product_type}</p>
+            <h2>Vendor:</h2>
+            <p>{Products.vendor}</p>
             <h2>Price:</h2>
-            <p>${Products.price}</p>
+            <p>RS.{Products.variants[0].price}</p>
             <h2>QTY:</h2>
-            <p>{Products.stock}</p>
+            <p>{Products.variants[0].sku}</p>
           </div>
         </div>
         <div className="productreviews-reviews-back">
           <h3>Reviews</h3>
           <div className="productreviews-reviews">
-            <ul>
-              {Reviews.length > 0 ? (
-                Reviews.map((review, index) => (
-                  <li key={index}>
-                    <p>
-                      <h5>{review.reviewerName}</h5>
-                      {review.comment}
-                    </p>
-                   <div className="title-rating">
-                   rating:
-                   <img src="../../../public/star.png" alt="" className="rating-logo" />
-                    {review.rating}
-                   </div>
-                  </li>
-                ))
-              ) : (
-                <h3>No reviews found</h3>
-              )}
-            </ul>
-            <ul>
-              {Reviews.length > 0 ? (
-                Reviews.map((review, index) => (
-                  <li key={index}>
-                    <p>
-                      <h5>{review.reviewerName}</h5>
-                      {review.comment}
-                    </p>
-                   <div className="title-rating">
-                   rating:
-                   <img src="../../../public/star.png" alt="" className="rating-logo" />
-                    {review.rating}
-                   </div>
-                  </li>
-                ))
-              ) : (
-                <h3>No reviews found</h3>
-              )}
-            </ul>
             <ul>
               {Reviews.length > 0 ? (
                 Reviews.map((review, index) => (

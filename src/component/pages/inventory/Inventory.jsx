@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "./Inventory.css";
+import axios from "axios";
 
 const Inventory = () => {
   //Hooks
@@ -17,6 +18,56 @@ const Inventory = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [productsCount, setProductsCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [message, setmessage] = useState(false);
+
+  const [AddProduct, setAddProduct] = useState({//add product state
+    title: "",
+    body_html: "",
+    vendor: "",
+    product_type: "",
+    images: [], // Array to hold uploaded images
+    variants: [{ price: "", sku: "" , inventory_quantity: "" }], // Initial variant data
+  });
+
+   // Handle image upload
+   const handleImageUpload = (event) => {
+    const files = event.target.files;
+    const images = [];
+
+    // Read files and convert to Base64
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        images.push(reader.result); // Base64 image
+        if (images.length === files.length) {
+          setAddProduct((prevData) => ({
+            ...prevData,
+            images,
+          }));
+        }
+      };
+    });
+  };
+
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setAddProduct((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  // Handle variant input changes
+  const handleVariantChange = (e, index) => {
+    const { name, value } = e.target;
+    const updatedVariants = [...AddProduct.variants];
+    updatedVariants[index] = { ...updatedVariants[index], [name]: value };
+    setAddProduct((prevProduct) => ({
+        ...prevProduct,
+        variants: updatedVariants,
+    }));
+};
 
   //Variables
   const shopify_logo = "/public/Shopify-Logo.png";
@@ -24,6 +75,21 @@ const Inventory = () => {
   const back_icon = "/public/arrow-small-left.png";
 
   //Functions
+  // Handle form submission (sending data to backend)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const shopifyUrl = 'http://localhost:5000/api/auth/add-shopify-product';
+      const response = await axios.post(shopifyUrl,
+            AddProduct);
+      setmessage(true);
+      console.log('Product added:', response.data);
+    } catch (error) {
+      setmessage(false);
+      console.error('Error adding product:', error);
+    }
+  };
   const toggleSearch = () => {
     setFilterOpen(filterOpen === "close" ? "open" : "close");
   };
@@ -45,8 +111,12 @@ const Inventory = () => {
     const filtered = products.filter(
       (product) =>
         product.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.brand?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.category?.toLowerCase().includes(searchTerm.toLowerCase())
+        (product.brand || product.vendor)
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        (product.category || product.product_type)
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase())
     );
     setFilteredProducts(filtered);
     setProductsCount(filtered.length);
@@ -57,7 +127,7 @@ const Inventory = () => {
     const fetchProducts = async () => {
       setLoading(true);
       let platformProducts = [];
-      const shopify = "https://dummyjson.com/products/search?q=phone";
+      const shopify = "http://localhost:5000/api/auth/shopify-products";
       const daraz = "https://dummyjson.com/products/search?q=all";
       try {
         if (selectedPlatform === "shopify") {
@@ -109,6 +179,15 @@ const Inventory = () => {
 
   return (
     <>
+    {/*Alert for product creation*/}
+    {message &&  <div className="shopify-alert-back">
+    <img src="../../../public/tick.png" alt="" className="alert-logo" />
+    <h3 className="shopify-alert">
+      <strong>Success! </strong>
+      Product added successfully
+    </h3>
+    <img src="../../../public/close.png" alt="" className="close-logo" onClick={()=>{setmessage(false)}}/>
+  </div>}
       {/* Add Product Form */}
       <div
         className="main-add-product-back"
@@ -137,7 +216,7 @@ const Inventory = () => {
           <div className="add-product-heading">
             <h3>Add Product</h3>
           </div>
-          <form className="add-product-form">
+          <form className="add-product-form" onSubmit={handleSubmit}>
             <div className="add-product-form-half-back">
               <div className="add-product-form-half1">
                 <label htmlFor="title">Title</label>
@@ -146,61 +225,93 @@ const Inventory = () => {
                   type="text"
                   className="add-product-form-input"
                   placeholder="Enter product title"
+                  value={AddProduct.title}
+                  onChange={handleChange}
                   required
                 />
+
                 <label htmlFor="description">Description</label>
                 <textarea
                   name="body_html"
                   className="description"
                   placeholder="Enter product description"
+                  value={AddProduct.body_html}
+                  onChange={handleChange}
                   required
                 ></textarea>
-                <label htmlFor="media">Media</label>
-                <input name="media" type="file" className="add-product-image" />
-              </div>
-              <div className="add-product-form-half2">
-                <label htmlFor="category">Category</label>
+
+                <label htmlFor="media">image</label>
                 <input
-                  name="category"
-                  type="text"
-                  className="add-product-form-input"
-                  placeholder="Enter product category"
-                  required
+                  name="images"
+                  type="file"
+                  className="add-product-image"
+                  onChange={handleImageUpload}
+                  multiple
                 />
+              </div>
+
+              <div className="add-product-form-half2">
                 <label htmlFor="product_type">Product Type</label>
                 <input
                   name="product_type"
                   type="text"
                   className="add-product-form-input"
                   placeholder="Enter product type"
+                  onChange={handleChange}
+                  value={AddProduct.product_type}
                   required
                 />
+
                 <label htmlFor="vendor">Vendor</label>
                 <input
                   name="vendor"
                   type="text"
                   className="add-product-form-input"
-                  placeholder="Enter product Vendor"
+                  placeholder="Enter product vendor"
+                  onChange={handleChange}
+                  value={AddProduct.vendor}
                   required
                 />
-                <label htmlFor="price">Price</label>
-                <input
-                  name="price"
-                  type="number"
-                  className="add-product-form-input"
-                  placeholder="Enter product price"
-                  required
-                />
-                <label htmlFor="sku">SKU (stock keeping unit)</label>
-                <input
-                  name="sku"
-                  type="number"
-                  className="add-product-form-input"
-                  placeholder="Enter product SKU"
-                  required
-                />
+
+                <div>
+                  <label htmlFor="price">Price</label>
+                  {AddProduct.variants.map((variant, index) => (
+                    <div key={index} className="variant-group">
+                      <input
+                        name="price"
+                        type="number"
+                        className="add-product-form-input"
+                        placeholder="Enter product price"
+                        value={variant.price}
+                        onChange={(e) => handleVariantChange(e, index)}
+                        required
+                      />
+                      <label htmlFor="sku">SKU (stock keeping unit)</label>
+                      <input
+                        name="sku"
+                        type="text"
+                        className="add-product-form-input"
+                        placeholder="Enter product SKU"
+                        value={variant.sku}
+                        onChange={(e) => handleVariantChange(e, index)}
+                        required
+                      />
+                      <label htmlFor="Inventory Quantity">Inventory Quantity </label>
+                      <input
+                        name="inventory_quantity"
+                        type="text"
+                        className="add-product-form-input"
+                        placeholder="Enter no of product"
+                        value={variant.inventory_quantity}
+                        onChange={(e) => handleVariantChange(e, index)}
+                        required
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
+
             <div className="add-product-form-btn-back">
               <button className="add-product-form-btn" type="submit">
                 Create
@@ -301,8 +412,11 @@ const Inventory = () => {
         {/* Inventory Products */}
         <div className="inventory-product-back">
           <div className="inventory-crud-btn-back">
-            <button onClick={toggleAddBtn} className="inventory-crud-btn"
-            style={{display:selectedPlatform==="All"?"none":"block"}}>
+            <button
+              onClick={toggleAddBtn}
+              className="inventory-crud-btn"
+              style={{ display: selectedPlatform === "All" ? "none" : "block" }}
+            >
               Add
             </button>
             <label className="inventory-result">
@@ -322,7 +436,7 @@ const Inventory = () => {
                   <th>TITLE</th>
                   <th id="description">DESCRIPTION</th>
                   <th>CATEGORY</th>
-                  <th>BRAND</th>
+                  <th>VENDOR</th>
                   <th>PRICE</th>
                   <th>QTY</th>
                   <th>ACTION</th>
@@ -335,22 +449,35 @@ const Inventory = () => {
                     <tr key={index}>
                       <td>
                         <img
-                          src={product.thumbnail}
+                          src={product.image?.src || product.thumbnail}
                           alt={product.title}
                           className="inventory-product-image"
                         />
                       </td>
                       <td>{product.title}</td>
-                      <td>{product.description}</td>
-                      <td>{product.category}</td>
-                      <td>{product.brand}</td>
-                      <td>{product.price}</td>
-                      <td>{product.stock}</td>
+                      <td>{product.body_html || product.description}</td>
+                      <td>{product.product_type || product.category}</td>
+                      <td>{product.vendor || product.brand}</td>
+                      <td>
+                        {product.variants && product.variants.length > 0 ? (
+                          <p>RS.{product.variants[0].price}</p>
+                        ) : (
+                          <p> ${product.price}</p>
+                        )}
+                      </td>
+                      <td>
+                        {product.variants && product.variants.length > 0 ? (
+                          <p>{product.variants[0].sku}</p>
+                        ) : (
+                          <p>{product.stock}</p>
+                        )}
+                      </td>
+
                       <td>
                         <div className="action-button-back">
                           <NavLink
                             to={`/Navbar/Inventory/${product.id}`}
-                            state={{ platform: product.platform.name }}
+                            state={{ platform_logo: product.platform.logo }}
                             id="inventory-update-btn"
                             className="action-button"
                           >
@@ -378,7 +505,7 @@ const Inventory = () => {
               </tbody>
             </table>
           </div>
-          {/*this inventory table is to display products on all available ecommerce platform*/}
+          {/*this inventory table is to display products on ALL available ecommerce platform*/}
           <div
             id="inventory-all-table"
             className="inventory-product-table-back"
@@ -391,7 +518,7 @@ const Inventory = () => {
                   <th>TITLE</th>
                   <th id="description">DESCRIPTION</th>
                   <th>CATEGORY</th>
-                  <th>BRAND</th>
+                  <th>VENDOR</th>
                   <th>PRICE</th>
                   <th>QTY</th>
                   <th>PLATFORM</th>
@@ -400,22 +527,32 @@ const Inventory = () => {
               </thead>
 
               <tbody>
-                {products && products.length > 0 ? (
+                {filteredProducts && filteredProducts.length > 0 ? (
                   filteredProducts.map((product, index) => (
                     <tr key={index}>
                       <td>
                         <img
-                          src={product.thumbnail}
+                          src={product.thumbnail || product.image?.src}
                           alt={product.title}
                           className="inventory-product-image"
                         />
                       </td>
                       <td>{product.title}</td>
-                      <td>{product.description}</td>
-                      <td>{product.category}</td>
-                      <td>{product.brand}</td>
-                      <td>{product.price}</td>
-                      <td>{product.stock}</td>
+                      <td>{product.description || product.body_html}</td>
+                      <td>{product.category || product.product_type}</td>
+                      <td>{product.brand || product.vendor}</td>
+                      <td>
+                        {product.variants && product.variants.length > 0 ? (
+                          <p>RS.{product.variants[0].price}</p>
+                        ) : (
+                          <p>${product.price}</p>
+                        )}
+                      </td>
+                      <td>
+                        {product.variants && product.variants.length > 0
+                          ? product.variants[0].sku
+                          : product.stock}
+                      </td>
                       <td id="platform-data">
                         <img
                           src={product.platform.logo}

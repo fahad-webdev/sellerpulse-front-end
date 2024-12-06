@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Login.css";
+import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -38,47 +39,40 @@ const Login = () => {
       password: false,
     };
     //showing error for empty email field
-    /*if (!formValues.email ) {
+    if (!formValues.email ) {
       errors.email = <div className="alert">E-mail is required</div>;
       showError.email = true;
     }
-    
     //showing error for empty password field
     if (!formValues.password ) {
       errors.password = <div className="alert">Password is required</div>;
       showError.password = true;
-    }*/
-    
-    const Email1 = 'fahadpervaiz2001@gmail.com';
-    const Password1 = 'fahad=123';
-    //email temporary validation
-    if (formValues.email !== Email1)
-    {
+    }
+    else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
       errors.email = <div className="alert">E-mail address is invalid</div>;
       showError.email = true;
-    }
-    /*else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
-      errors.email = <div className="alert">E-mail address is invalid</div>;
-      showError.email = true;
-    } */
-     if(formValues.password !== Password1){
-      errors.password = <div className="alert">Password is invalid</div>;
-      showError.password = true;
-    }
-    if((formValues.email === Email1)&&(formValues.password === Password1)){
-      navigate("/Navbar/Dashboard/TotalProduct");
-    }
-  
-
+    } 
     setFormErrors(errors);
     setShowError(showError);
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log("Form submitted successfully", formValues);
+      try {
+        const URL = "http://localhost:5000/api/auth/login";
+        const response = await axios.post(URL,formValues,{
+          Headers:{
+            "Content-Type" : "application/json",
+          }
+        });
+        console.log("Form submitted successfully", response);
+        navigate("/Navbar/Dashboard/TotalProduct");
+
+      } catch (error) {
+        console.log("login failed");
+      }
       //navigate("/Navbar/Dashboard/TotalProduct");
     }
   };
@@ -132,7 +126,7 @@ const Login = () => {
                         }}
                       >
                         <img
-                          src="/public/google-icon.png"
+                          src="../../../../public/google-icon.png"
                           alt="Google Icon"
                           className="google-icon"
                         />{" "}
