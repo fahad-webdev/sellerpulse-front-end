@@ -60,19 +60,19 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      try {
+      /*try {
         const URL = "http://localhost:5000/api/auth/login";
         const response = await axios.post(URL,formValues,{
           Headers:{
             "Content-Type" : "application/json",
           }
-        });
+        });*/
         console.log("Form submitted successfully", response);
         navigate("/Navbar/Dashboard/TotalProduct");
 
-      } catch (error) {
+      /*} catch (error) {
         console.log("login failed");
-      }
+      }*/
       //navigate("/Navbar/Dashboard/TotalProduct");
     }
   };
