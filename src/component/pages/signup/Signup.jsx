@@ -108,15 +108,15 @@ const signup = () => {
   };
 
   useEffect(() => {
-    if (showError.email || showError.password) {
+    if (showError.email || showError.password ) {
       const timer = setTimeout(() => {
         setFormErrors({
-          name: "",
+          username: "",
           email: "",
           password: "",
         });
         setShowError({
-          name: false,
+          username: false,
           email: false,
           password: false,
         });
@@ -187,8 +187,8 @@ const signup = () => {
                         value={formValues.username}
                         onChange={handleInputChange}
                       />
-                      {formErrors.name && (
-                        <p className="error">{formErrors.name}</p>
+                      {formErrors.username && (
+                        <p className="error">{formErrors.username}</p>
                       )}
                     </td>
                   </tr>
