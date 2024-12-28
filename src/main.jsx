@@ -7,7 +7,6 @@ import TotalSales from "./component/graphs/TotalSales";
 import Products from "./component/pages/products/Products";
 import Sales from "./component/pages/sales/Sales";
 import Guideline from "./component/pages/guideline/Guideline";
-import Popup from "./component/pages/storeconnect/Popup";
 import Profit from "./component/pages/profit/Profit";
 import Inventory from "./component/pages/inventory/Inventory";
 import Setting from "./component/pages/setting/Setting";
@@ -18,11 +17,18 @@ import Home from "./component/pages/home/Home";
 import ProductReviews from "./component/pages/products/ProductReviews/ProductReviews";
 import UpdateProduct from "./component/pages/products/UpdateProduct/UpdateProduct.jsx";
 import PageNotFound from "./component/pages/pagenotfound/PageNotFound.jsx";
-import Accepted from "./component/pages/auth/accepted.jsx";
-import Rejected from "./component/pages/auth/rejected.jsx";
 import PrivacyPolicy from "./component/pages/privay-policy/PrivacyPolicy.jsx";
-
+import Connectshopify from "./component/pages/storeconnect/connectShopify";
+import ConnectEbay from "./component/pages/storeconnect/connectEbay.jsx"
 import * as ReactDOM from "react-dom/client";
+import AdminPanel from "./component/admin/adminLayout/AdminPanel.jsx";
+import AdminDashboard from "./component/admin/adminPages/dashboard/AdminDashboard.jsx";
+import ManageUsers from "./component/admin/adminPages/manageUsers/ManageUsers.jsx";
+import Users from "./component/admin/adminPages/users/Users.jsx";
+import UpdateUsers from "./component/admin/adminPages/updateUsers/UpdateUsers.jsx";
+import {AuthProvider , useAuth} from "./component/context/AuthContext.jsx";
+import ConnectDaraz from "./component/pages/storeconnect/connectDaraz.jsx";
+
 
 import {
   createBrowserRouter,
@@ -32,8 +38,8 @@ import {
 
 
 const ProtectedRoute = ({ children }) => {
-  // Here you would check if the user is authenticated
-  const isAuthenticated = true; // Replace this with actual authentication logic
+  const {authToken} = useAuth();
+  const isAuthenticated = authToken? true : false  
   return isAuthenticated ? children : <Navigate to="/Login" />;
 };
 
@@ -49,6 +55,24 @@ const router = createBrowserRouter([
   {
     path: "/Signup",
     element: <Signup />,
+  },
+  {
+    path:"/Admin",
+    element: <AdminPanel/>,
+    children:[
+      {
+        path:'/Admin/Dashboard',
+        element:<AdminDashboard/>
+      },
+      {
+        path:'/Admin/Users',
+        element:<Users/>
+      },
+      {
+        path:'/Admin/manage-users',
+        element:<ManageUsers/>
+      },
+    ]
   },
   {
     path: "/Navbar",
@@ -93,8 +117,16 @@ const router = createBrowserRouter([
         element: <Profit />,
       },
       {
-        path: "/Navbar/Popup",
-        element: <Popup />,
+        path: "/Navbar/connect-shopify",
+        element: <Connectshopify />,
+      },
+      {
+        path: "/Navbar/connect-daraz",
+        element: <ConnectDaraz />,
+      },
+      {
+        path: "/Navbar/connect-ebay",
+        element: <ConnectEbay/>
       },
       {
         path: "/Navbar/Guideline",
@@ -119,14 +151,6 @@ const router = createBrowserRouter([
     element:<PrivacyPolicy/>,
   },
   {
-    path:'/auth/accepted',
-    element: <Accepted/>,
-  },
-  {
-    path:'/auth/declined',
-    element: <Rejected/>,
-  },
-  {
     path:'*',
     element:<PageNotFound/>,
   },
@@ -134,6 +158,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+    <AuthProvider>
     <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );

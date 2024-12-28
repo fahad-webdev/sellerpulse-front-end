@@ -89,7 +89,8 @@
   height: 50%;
   padding: 3px;
   outline-color: rgba(129, 176, 223, 0.615);
-
+  background-color: white;
+  color:black;
 }
 
 .add-product-form-half2 {
@@ -109,6 +110,8 @@
   margin: 0px auto;
   border-radius: 5px;
   border: 1px solid grey;
+  background-color: white;
+  color: black;
   font-size: 12px;
   padding: 6px;
   outline-color: rgba(129, 176, 223, 0.615);
@@ -120,11 +123,12 @@
 
 .add-product-form-btn-back {
   /*background-color: rebeccapurple;*/
+  margin-top: 50px;
   padding: 0px 5px;
 
 }
 
-.add-product-form-back .add-product-form-btn {
+.add-product-form-back .add-product-form-btn ,.reset-product-form-btn {
   width: 60px;
   padding: 5px 5px;
   font-size: 14px;
@@ -134,6 +138,11 @@
   background-image: linear-gradient(#1d5eb3, #14295f);
   color: white;
   cursor: pointer;
+  visibility:visible;
+  position: absolute;
+}
+.reset-product-form-btn{
+  margin:0px 75px;
 }
 .shopify-alert-back,.signup-alert-back{
   height:50px;
@@ -331,13 +340,17 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
+  text-decoration: none;
 
-.inventory-product-table tbody td .action-button-back #inventory-update-btn {
+}
+#inventory-update-btn {
   background-image: linear-gradient(rgb(24, 72, 135), rgb(29, 71, 126));
   padding:5px 1px;
   text-decoration: none;
 
+}
+#inventory-delete-btn{
+  width: 45px;
 }
 
 .inventory-product-table tbody td {
@@ -345,12 +358,33 @@
   font-weight: 600;
 }
 
-
 .inventory-product-table td {
   border: 1px solid rgb(197, 197, 197);
 
 }
-
+#individual-platform-table th:nth-child(1),
+#individual-platform-table td:nth-child(1) {
+  /*background-color: beige;*/
+  width: 5%;
+}
+#individual-platform-table th:nth-child(2),
+#individual-platform-table td:nth-child(2) {
+  /*background-color: #0d4f22;*/
+  width: 5%;
+}
+#individual-platform-table th:nth-child(3),
+#individual-platform-table td:nth-child(3) {
+  /*background-color: yellow;*/
+  width: 10%;
+}
+#individual-platform-table th:nth-child(5),
+#individual-platform-table td:nth-child(5),
+#individual-platform-table th:nth-child(6),
+#individual-platform-table td:nth-child(6)
+ {
+  /*background-color: aqua;*/
+  width: 2%;
+}
 .inventory-product-table th:nth-child(1),
 .inventory-product-table td:nth-child(1) {
   width: 10%;
@@ -383,10 +417,14 @@ td:nth-child(5) {
 
 .inventory-product-table th:nth-child(6),
 .inventory-product-table td:nth-child(6) {
-  /* background-color: aqua;*/
-  width: 10%;
+  /*background-color: aqua;*/
+  width: 5%;
 }
-
+.inventory-product-table th:nth-child(7),
+.inventory-product-table td:nth-child(7) {
+  /*background-color: yellow;*/
+  width:5%;
+}
 .inventory-product-table th:nth-child(9),
 .inventory-product-table td:nth-child(9) {
   /* background-color: aqua;*/
@@ -403,6 +441,7 @@ td:nth-child(5) {
   border: none;
   margin: 3px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .inventory-product-table thead {

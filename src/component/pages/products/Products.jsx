@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./Products.css";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
 
 const Products = () => {
   const [selectedPlatform, setSelectedPlatform] = useState(
     "All",
     "shopify",
-    "daraz"
+    "daraz",
+    "ebay",
   );
   const [filterOpen, setFilterOpen] = useState("close");
   const [products, setProducts] = useState([]);
@@ -25,62 +27,53 @@ const Products = () => {
   const handlePlatformChange = (platform) => {
     setSelectedPlatform(platform);
   };
-  /*testing API to display data on product page*/
-  useEffect(() => {
+  //backend apis to fetch products
+const shopify_url = `http://localhost:3000/api/v1/auth/shopify-products`;
+  const daraz_url = `http://localhost:3000/api/v1/auth/daraz-products`;
+  const ebay_url = `http://localhost:3000/api/v1/auth/ebay-products`;
+  const all_products_url = `http://localhost:3000/api/v1/auth/all-products`;
+//function to fetch products
+const FetchProducts = async (url) =>{
+  try{
+    const response = await axios.get(url,{withCredentials:true});
+    console.log("response: ",response.data);
+    if(response.data || response.data.products){
+      return response.data.products;
+    }    
+  }catch(error){
+    console.log("error fetching product",error);
+    return[];
+  }
+}
+//fetching products using endpoint 
+useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
-
-      let platformProducts = [];
-      const shopify = "http://localhost:5000/api/auth/shopify-products";
-      //"https://dummyjson.com/products/search?q=phone";
-      const daraz = "https://dummyjson.com/products/search?q=all";
-
       try {
         if (selectedPlatform === "shopify") {
-          const response = await fetch(shopify);
-          const shopifydata = await response.json();
-          platformProducts = shopifydata.products.map((product) => ({
-            ...product,
-            platform: { name: "shopify", logo: shopify_logo },
-          }));
+          setProducts(await FetchProducts(shopify_url));
+          setFilteredProducts(await FetchProducts(shopify_url));
+          setProductsCount(filteredProducts.length);
         } else if (selectedPlatform === "daraz") {
-          const response = await fetch(daraz);
-          const darazdata = await response.json();
-          platformProducts = darazdata.products.map((product) => ({
-            ...product,
-            platform: { name: "daraz", logo: daraz_logo },
-          }));
-        } else if (selectedPlatform === "All") {
-          const shopifyresponse = await fetch(shopify);
-          const shopifydata = await shopifyresponse.json();
-          const shopifyproducts = shopifydata.products.map((product) => ({
-            ...product,
-            platform: { name: "shopify", logo: shopify_logo },
-          }));
-
-          const darazresponse = await fetch(daraz);
-          const darazdata = await darazresponse.json();
-          const darazproducts = darazdata.products.map((product) => ({
-            ...product,
-            platform: { name: "daraz", logo: daraz_logo },
-          }));
-
-          platformProducts = [...shopifyproducts, ...darazproducts];
+          setProducts(await FetchProducts(daraz_url));
+          setFilteredProducts(await FetchProducts(daraz_url));
+          setProductsCount(filteredProducts.length);
+        }else if (selectedPlatform === "ebay") {
+          setProducts(await FetchProducts(ebay_url));
+          setFilteredProducts(await FetchProducts(ebay_url));
+          setProductsCount(filteredProducts.length);
         }
-        console.log(platformProducts);
-        setProducts(platformProducts);
-        setFilteredProducts(platformProducts);
-        setProductsCount(platformProducts.length);
-      } catch (error) {
-        console.error("Error fetching products:", error);
+         else if (selectedPlatform === "All") {
+          setProducts(await FetchProducts(all_products_url));
+          setFilteredProducts(await FetchProducts(all_products_url));
+          setProductsCount(filteredProducts.length);
+        }
       } finally {
         setLoading(false);
       }
     };
-
     fetchProducts();
   }, [selectedPlatform]);
-
   const handleSearch = () => {
     const filtered = products.filter(
       (product) =>
@@ -164,12 +157,18 @@ const Products = () => {
               {/*ebay button */}
               <button
                 className="platform-name"
-                onClick={() => handlePlatformChange("daraz")}
-                disabled
+                style={{
+                  backgroundImage:
+                    selectedPlatform === "ebay"
+                      ? "linear-gradient(#1c59aa,#1c59aa)"
+                      : "",
+                }}
+                onClick={() => handlePlatformChange("ebay")}
+                
               >
                 ebay
               </button>
-              {/*All platforms button */}
+              {/*ebay platforms button */}
               <button
                 className="platform-name"
                 style={{
@@ -198,10 +197,10 @@ const Products = () => {
 
         <div className="product-card-back-scroll">
           <label className="product-result">
-            no of products {productsCount}
+            no of products {filteredProducts.length}
           </label>
-          <div className="product-card-scroll">
-            {filteredProducts.map((product) => (
+          <div className="product-card-scroll" >
+           {products && products.length > 0 ? (filteredProducts.map((product) => (
               <NavLink
                 to={`/Navbar/Products/${product.id}`}
                 state={{//state is a prop that will allow us to send data through link
@@ -214,7 +213,7 @@ const Products = () => {
                 <div className="product-card">
                   <img
                     className="product-card-img"
-                    src={(product.image?.src)||(product.thumbnail)}
+                    src={(product.image?.src)||(product.image)||(product.thumbnail)}
                     alt={product.title}
                   />
                   <p id="heading">{product.title}</p>
@@ -227,7 +226,14 @@ const Products = () => {
                   <p>Platform: {product.platform.name}</p>
                 </div>
               </NavLink>
-            ))}
+            ))):
+            (
+                  <div className="product-unavailable">
+                  <span>
+                    No products available
+                  </span>
+                  </div>
+            )}
           </div>
         </div>
       </div>

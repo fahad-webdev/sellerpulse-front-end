@@ -1,29 +1,27 @@
-import React from "react";
-import { useState } from "react";
+import { React, useState, useEffect } from "react";
 import "./Navbar.css";
-import { Outlet, NavLink } from "react-router-dom";
-
-
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 const Navbar = () => {
   //hooks
   const [sidebar, setsidebar] = useState("close");
   const [submenu, setsubmenu] = useState("close");
   const [dropProfile, setdropProfile] = useState("close");
-  const [updateName, setupdateName] = useState("M.Fahad Pervaiz");
-  const [updateEmail, setupdateEmail] = useState("fahadpervaiz2001@gmail.com");
-  const [updateBtn, setupdateBtn] = useState(true);
-
-  //Variable 
- 
+  const [updateBtn, setupdateBtn] = useState(false);
+  const { authToken, logout } = useAuth();
+  const [userProfile, setUserProfile] = useState({
+    //for displaying user info
+    name: "",
+    email: "",
+    profilePicture: "",
+  });
+  //variable
+  const navigate = useNavigate();
   //functions
   const toggleUpdateInfo = () => {
     setupdateBtn(updateBtn === true ? false : true);
-  };
-  const updateChangeName = (event) => {
-    setupdateName(event.target.value);
-  };
-  const updateChangeEmail = (event) => {
-    setupdateEmail(event.target.value);
+    setdropProfile(updateBtn === true ? "open" : "close");
   };
   const togglesidebar = () => {
     setsidebar(sidebar === "close" ? "open" : "close");
@@ -35,6 +33,88 @@ const Navbar = () => {
   const toggleProfile = () => {
     setdropProfile(dropProfile === "close" ? "open" : "close");
   };
+  //to change the value of input field 
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setUserProfile((prevProfile) => ({
+      ...prevProfile,
+      [name]: value,
+    }));
+  };
+  
+  //function to fetch loggedin user profile info
+  const userInfo = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/api/v1/users/me",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`, // Send the auth token
+          },
+          withCredentials: true, // Include cookies if needed
+        }
+      );
+      console.log("User Info: ", response.data);
+      // Assuming response.data.data.user contains the user object
+      const user = response.data.data.user;
+      setUserProfile({
+        name: user.name,
+        email: user.email,
+        profilePicture: user.profilePicture,
+      });
+    } catch (error) {
+      console.error("Error fetching user information", error);
+    }
+  };
+  //function to update user profile info
+  const UpdateUser = async ()=>{
+    try {
+
+      const url = `http://localhost:3000/api/v1/users/manage-profile`;
+      const response = await axios.put(url,
+        userProfile,
+        {
+          headers:{
+            Authorization: `Bearer ${authToken}`,
+          }
+        },
+        {
+        withCredentials:true,
+        }
+      );
+      alert("User info updated successfully");
+      console.log("User info updated successfully",response.data);
+    } catch (error) {
+      console.log("error updating user info",error);
+    }
+  }
+  //function to handle logout
+  const handleLogout = async () => {
+    const confirmDelete = window.confirm("Are you sure you want to logout?");
+    if (!confirmDelete) return;
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/api/v1/users/logout",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        },
+        {
+          withCredentials: true, // Ensure the JWT cookie is sent with the request
+        }
+      );
+      logout();
+      console.log("you have logged out successfully", response);
+      navigate("/");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+  useEffect(() => {
+    userInfo();
+  }, []);
+
   return (
     <>
       <div className="background"></div>
@@ -70,20 +150,26 @@ const Navbar = () => {
               backgroundImage:
                 dropProfile === "open"
                   ? " linear-gradient( rgb(192, 192, 192) , rgb(204, 204, 204))"
+                  : updateBtn === true
+                  ? " linear-gradient( rgb(192, 192, 192) , rgb(204, 204, 204))"
                   : "",
             }}
           >
             <img
-              src="/public/team-image02.jpg"
+              src={userProfile.profilePicture}
               id="nav-profile-pic"
               alt="profile pic"
             />
-            <label className="nav-profile-info">{updateName}</label>
+            <label className="nav-profile-info">{userProfile.name}</label>
             <img
               src="/public/arrow.png"
               style={{
                 transform:
-                  dropProfile === "open" ? "rotate(180deg)" : "rotate(0deg)",
+                  dropProfile === "open"
+                    ? "rotate(180deg)"
+                    : updateBtn === true
+                    ? "rotate(180deg)"
+                    : "rotate(0deg)",
               }}
               alt=""
               className="profile-arrow"
@@ -91,55 +177,6 @@ const Navbar = () => {
           </div>
         </nav>
         <div className="content-container">
-          <div
-            className="drop-down-profile-back"
-            style={{ width: dropProfile === "open" ? "180px" : "0px" }}
-          >
-            <div className="dropdown-profile">
-              <div className="profile-pic-back">
-                <img
-                  src="/public/team-image02.jpg"
-                  alt=""
-                  className="drop-profile-pic"
-                />
-              </div>
-              <div className="drop-profile-info">
-                <form action="">
-                  <input
-                    autoComplete="off"
-                    type="text"
-                    className="drop-profile-input"
-                    value={updateName}
-                    onChange={updateChangeName}
-                    placeholder="Enter your name"
-                    required
-                    disabled={updateBtn}
-                    style={{
-                      border: updateBtn === false ? "1px solid grey" : "",
-                    }}
-                  />
-                  <input
-                    autoComplete="off"
-                    type="email"
-                    className="drop-profile-input"
-                    id="drop-profile-email"
-                    placeholder="Enter your @example.com"
-                    value={`${updateEmail}`}
-                    onChange={updateChangeEmail}
-                    required
-                    disabled={updateBtn}
-                    style={{
-                      border: updateBtn === false ? "1px solid grey" : "",
-                    }}
-                  />
-                </form>
-              </div>
-              <button onClick={toggleUpdateInfo} className="drop-update-btn">
-                Update info
-              </button>
-            </div>
-          </div>
-
           <div
             className={`sidebar `}
             style={{ width: sidebar === "open" ? "200px" : "45px" }}
@@ -171,7 +208,10 @@ const Navbar = () => {
                 <NavLink
                   to="Products"
                   className={(e) => {
-                    return e.isActive || location.pathname.startsWith('/Navbar/ProductReviews')? "menu-options-active" : "menu-options";
+                    return e.isActive ||
+                      location.pathname.startsWith("/Navbar/ProductReviews")
+                      ? "menu-options-active"
+                      : "menu-options";
                   }}
                 >
                   <img className="products" src="/public/product.png"></img>
@@ -201,8 +241,16 @@ const Navbar = () => {
                 </NavLink>
               </li>
               <li className="store-back">
-                <div
-                  className="menu-options"
+                <NavLink
+                  to="/Navbar/connect-shopify"
+                  className={(e) => {
+                    return e.isActive ||
+                      location.pathname.startsWith("connect-shopify") ||
+                      location.pathname.startsWith("connect-daraz") ||
+                      location.pathname.startsWith("connect-ebay")
+                      ? "menu-options-active"
+                      : "menu-options";
+                  }}
                   style={{
                     backgroundColor: submenu === "open" ? " #083166e8" : "",
                     borderRight: submenu === "open" ? "1px solid #ffffff" : "",
@@ -212,9 +260,9 @@ const Navbar = () => {
                     className="store"
                     src="/public/basket-shopping-simple.png"
                   ></img>
-                  <a onClick={toggleSubmenu} className="link">
+                  <span onClick={toggleSubmenu} className="link">
                     Stores
-                  </a>
+                  </span>
                   <img
                     onClick={toggleSubmenu}
                     src="/public/right-arrow.png"
@@ -226,7 +274,7 @@ const Navbar = () => {
                     }}
                     className="arrow"
                   />
-                </div>
+                </NavLink>
               </li>
               <div
                 style={{
@@ -234,7 +282,7 @@ const Navbar = () => {
                     sidebar === "close"
                       ? "0px"
                       : submenu === "open"
-                      ? "153px"
+                      ? "145px"
                       : "0px",
                 }}
                 className="dropdown"
@@ -249,9 +297,7 @@ const Navbar = () => {
                   <label className="label" id="amazon-label">
                     Amazon
                   </label>
-                  <NavLink to="Popup" 
-                   className="connect"
-                   state={{platform:{name:"Amazon"}}}>
+                  <NavLink to="connect" className="connect">
                     Connect
                   </NavLink>
                 </li>
@@ -265,8 +311,7 @@ const Navbar = () => {
                   <label className="label" id="daraz-label">
                     Daraz
                   </label>
-                  <NavLink to="Popup" className="connect"
-                  state={{platform:{name:"daraz"}}}>
+                  <NavLink to="connect-daraz" className="connect">
                     Connect
                   </NavLink>
                 </li>
@@ -275,9 +320,7 @@ const Navbar = () => {
                   <label className="label" id="shopify-label">
                     Shopify
                   </label>
-                  <NavLink to="Popup" className="connect"
-                  state={{platform:{name:"shopify"}}}>
-
+                  <NavLink to="connect-shopify" className="connect">
                     Connect
                   </NavLink>
                 </li>
@@ -291,8 +334,7 @@ const Navbar = () => {
                   <label className="label" id="ebay-label">
                     ebay
                   </label>
-                  <NavLink to="Popup" className="connect"
-                  state={{platform:{name:"ebay"}}}>
+                  <NavLink to="connect-ebay" className="connect">
                     Connect
                   </NavLink>
                 </li>
@@ -308,28 +350,15 @@ const Navbar = () => {
                   <label className="link">Guidelines</label>
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  to="Setting"
-                  className={(e) => {
-                    return e.isActive ? "menu-options-active" : "menu-options";
-                  }}
-                >
-                  <img className="guideline" src="/public/setting.png"></img>
-                  <label className="link">Setting</label>
-                </NavLink>
-              </li>
             </ul>
-            <NavLink to="/" className="logout_back">
+            <button className="logout_back" onClick={handleLogout}>
               <img
                 src="/public/insert-alt (2).png"
                 alt=""
                 className="logout_icon"
               />
-              <div  className="logout_btn">
-                Logout
-              </div>
-            </NavLink>
+              <div className="logout_btn">Logout</div>
+            </button>
           </div>
           <div
             className="content"
@@ -338,9 +367,106 @@ const Navbar = () => {
                 sidebar === "open"
                   ? "-155px"
                   : "" /* width: sidebar === "open" ? "80%" : "92%"*/,
+              marginRight:
+                dropProfile === "open"
+                  ? "-180px"
+                  : updateBtn === true
+                  ? "-180px"
+                  : "" /* width: sidebar === "open" ? "80%" : "92%"*/,
             }}
           >
             {<Outlet />}
+          </div>
+          {/*User Profile Sidebar code  */}
+          <div
+            className="user-profile-sidebar-back"
+            style={{
+              width:
+                dropProfile === "open"
+                  ? "180px"
+                  : updateBtn === true
+                  ? "180px"
+                  : "0px",
+            }}
+          >
+            <div className="user-profile-info-back">
+              <div className="user-profile-pic-back">
+                <img
+                  src={userProfile.profilePicture}
+                  className="user-profile-pic"
+                  alt=""
+                />
+              </div>
+              <div
+                className="user-profile-info"
+                style={{ height: updateBtn === false ? "100px" : "140px" }}
+              >
+                <input
+                  onChange={handleOnChange}
+                  disabled={updateBtn === true ? false : true}
+                  className="user-profile-input"
+                  type="text"
+                  name="name"
+                  style={{
+                    border:
+                      updateBtn === true ? "1px solid rgb(76, 76, 76)" : "none",
+                  }}
+                  value={userProfile.name}
+                />
+                <input
+                  onChange={handleOnChange}
+                  disabled={updateBtn === true ? false : true}
+                  className="user-profile-input"
+                  type="text"
+                  name="email"
+                  style={{
+                    border:
+                      updateBtn === true ? "1px solid rgb(76, 76, 76)" : "none",
+                  }}
+                  value={userProfile.email}
+                />
+                <input
+                  className="user-profile-input"
+                  type="file"
+                  style={{
+                    visibility: updateBtn === true ? "visible" : "hidden",
+                    border:
+                      updateBtn === true ? "1px solid rgb(76, 76, 76)" : "none",
+                  }}
+                />
+              </div>
+              <div className="user-profile-btn-back">
+                <button
+                  className="user-profile-btn"
+                  onClick={toggleUpdateInfo}
+                  style={{
+                    visibility: updateBtn === true ? "hidden" : "visible",
+                  }}
+                >
+                  Update Info
+                </button>
+                <button
+                onClick={UpdateUser}
+                  id="confirm-btn"
+                  className="user-profile-btn"
+                  style={{
+                    visibility: updateBtn === true ? "visible" : "hidden",
+                  }}
+                >
+                  Confirm
+                </button>
+                <button
+                  id="cancel-btn"
+                  className="user-profile-btn"
+                  onClick={toggleUpdateInfo}
+                  style={{
+                    visibility: updateBtn === true ? "visible" : "hidden",
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

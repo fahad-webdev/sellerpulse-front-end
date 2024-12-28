@@ -13,7 +13,7 @@
     top: 39px;
     left: 35%;
     z-index: 1;
-    overflow: hidden;
+    overflow:hidden  ;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     transition: 0.3s;
@@ -359,7 +359,16 @@
     color: white;
     cursor: pointer;
 }
-
+/* CSS styling for product not available */
+.product-unavailable{
+    font-weight: 400;
+    color:rgb(142, 2, 2);
+    /*background-color: yellow;*/
+    position: absolute;
+    transform: translate(-50%,-50%);
+    left:50%;
+    top:30%;
+}
 @keyframes spin {
     0% {
         transform: rotate(0deg);

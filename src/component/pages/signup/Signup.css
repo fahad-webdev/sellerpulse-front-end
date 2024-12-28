@@ -56,10 +56,16 @@
 /*=====================================================================
 Success Alert message 
 =======================================================================*/
-#signup-alert-back{
+#signup-alert-back,#signup-danger-back{
     /*background-color:pink;*/
     width: 100%;
     border-radius: 5px;
+}
+#signup-danger-back{
+    background-color: #ff6a6a;  
+}
+#signup-danger-back h3{
+    color:rgb(70, 0, 0);
 }
 .signup-form-main {
     height: 100%;

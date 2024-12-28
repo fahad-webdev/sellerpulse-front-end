@@ -54,8 +54,8 @@ const ComposedChartComponent = () => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <ComposedChart
-        width={500}
-        height={400}
+        width={400}
+        height={300}
         data={data}
         margin={{
           top: 20,

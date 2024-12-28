@@ -1,0 +1,18 @@
+*{
+    padding:0px;
+    margin:0px;
+}
+.users-main-back{
+    
+}
+.users-main{
+    margin:10px;
+    /*background-color: yellow;*/
+}
+#user-card-scroll{
+    /*background-color: aqua;*/
+    height: 450px;
+}
+#user-card-scroll::-webkit-scrollbar{
+    display: none;
+}

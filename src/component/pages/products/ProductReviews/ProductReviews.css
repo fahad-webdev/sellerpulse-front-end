@@ -165,7 +165,7 @@
 .productreviews-reviews-back .productreviews-reviews {
     width: 100%;
     background-color: white;
-    height: 380px;
+    height: 360px;
     overflow-y: scroll;
     margin: auto;
 }
@@ -205,7 +205,35 @@
 .productreviews-reviews-back .productreviews-reviews::-webkit-scrollbar {
     display: none;
 }
-
+/*           CSS styling for sentiment analysis */
+.sentiment-analysis-back{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*background-color: yellow;*/
+}
+.sentiment-analysis-back h3{
+    margin:0px 10px;
+}
+.sentiment-analysis-back .sentiment-analysis{
+    display: flex;
+    gap:30px;
+    margin-top: 8px;
+    /*background-color: pink;*/
+    width:100%;
+}
+.sentiment-analysis-back .sentiment-analysis label{
+    display: flex;
+}
+.sentiment-analysis-back .sentiment-analysis #positive{
+    color:rgb(11, 175, 11);
+}
+.sentiment-analysis-back .sentiment-analysis #neutral{
+    color:rgb(196, 190, 0);
+}
+.sentiment-analysis-back .sentiment-analysis #negative{
+    color:rgb(183, 10, 10);
+}
 /*
 ========================================================================
                     Media query for maintaining responsiveness
@@ -296,6 +324,6 @@
     }
 
     .productreviews-reviews-back .productreviews-reviews {
-        height: 520px;
+        height: 500px;
     }
 }

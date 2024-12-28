@@ -4,17 +4,18 @@ import SemiCircleSales from "../../graphs/SemiCircleSales";
 import ComposedChartComponent from "../../graphs/ComposedChartComponent";
 import CountUp from "react-countup";
 import "./Sales.css";
+import axios from "axios";
 
 const Sales = () => {
   //================================= Hooks=================================
   const [selectedPlatform, setSelectedPlatform] = useState(
+    "All",
     "shopify",
     "daraz",
-    "All",
+    "ebay",
   );
   const [filterOpen, setFilterOpen] = useState("close");
   const [products, setProducts] = useState([]);
-  const [productsCount, setProductsCount] = useState(0);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
@@ -49,55 +50,6 @@ const Sales = () => {
     setFilteredProducts(filtered);
     //setProductsCount(filtered.length);
   };
-  // this function is used to fetch the products data
-  const fetchProducts = async () => {
-    setLoading(true);
-    let PlatformProduct = [];
-    const shopifyUrl = "http://localhost:5000/api/auth/shopify-products";
-    const darazUrl = "https://dummyjson.com/products/search?q=all";
-
-    try {
-      if (selectedPlatform === "shopify") {
-        const response = await fetch(shopifyUrl);
-        const data = await response.json();
-        PlatformProduct = data.products.map((product) => ({
-          ...product,
-          platform: { name: "shopify", logo: shopify_logo },
-        }));
-      } else if (selectedPlatform === "daraz") {
-        const response = await fetch(darazUrl);
-        const data = await response.json();
-        PlatformProduct = data.products.map((product) => ({
-          ...product,
-          platform: { name: "daraz", logo: daraz_logo },
-        }));
-      } else if (selectedPlatform === "All") {
-        const shopifyresponse = await fetch(shopifyUrl);
-        const shopify_data = await shopifyresponse.json();
-        const shopify_products = shopify_data.products.map((product) => ({
-          ...product,
-          platform: { name: "shopify", logo: shopify_logo },
-        }));
-
-        const darazresponse = await fetch(darazUrl);
-        const daraz_data = await darazresponse.json();
-        const daraz_products = daraz_data.products.map((product) => ({
-          ...product,
-          platform: { name: "daraz", logo: daraz_logo },
-        }));
-
-        PlatformProduct = [...shopify_products, ...daraz_products];
-      }
-
-      setProducts(PlatformProduct); // Adjust based on the API response structure
-      setProductsCount(PlatformProduct.length); // to calculate no of products
-      setFilteredProducts(PlatformProduct);
-    } catch (error) {
-      console.log("error in fetching products....", error);
-    } finally {
-      setLoading(false);
-    }
-  };
   // Function to calculate total orders for the selected platform
   const productCount = async () => {
     setLoading(true);
@@ -105,7 +57,7 @@ const Sales = () => {
     let url = "https://dummyjson.com/products";
 
     if (selectedPlatform === "shopify") {
-      url = "http://localhost:5000/api/auth/shopify-products";
+      url = "http://localhost:3000/api/v1/auth/shopify-products";
     } else if (selectedPlatform === "daraz") {
       url = "https://dummyjson.com/products/search?q=all";
     }
@@ -132,11 +84,51 @@ const Sales = () => {
       setLoading(false);
     }
   };
-
+  //backend APIs 
+  const shopify_url = `http://localhost:3000/api/v1/auth/shopify-products`;
+  const daraz_url = `http://localhost:3000/api/v1/auth/daraz-products`;
+  const ebay_url = `http://localhost:3000/api/v1/auth/ebay-products`;
+  const all_products_url = `http://localhost:3000/api/v1/auth/all-products`;
+  //function to fetch products from individual and all platforms
+  const FetchProducts = async (url)=>{
+    try {
+      const response = await axios.get(url,{
+        withCredentials:true,
+      });
+      console.log("Products: ", response.data);
+      if(response.data && response.data.products){
+        return response.data.products;
+      }
+    } catch (error) {
+      console.log("Error fetching products", error);
+      return [];
+    }
+  }
   // Fetch products based on selected platform
   useEffect(() => {
-    productCount();
-    fetchProducts();
+    setLoading(true);
+  const fetchproducts = async () =>{
+    try {
+      if(selectedPlatform==="shopify"){
+        setProducts(await FetchProducts(shopify_url));
+        setFilteredProducts(await FetchProducts(shopify_url));
+      }else if(selectedPlatform==="daraz"){
+        setProducts(await FetchProducts(daraz_url));
+        setFilteredProducts(await FetchProducts(daraz_url));
+      }else if(selectedPlatform==="ebay"){
+        setProducts(await FetchProducts(ebay_url));
+        setFilteredProducts(await FetchProducts(ebay_url));
+      }else if(selectedPlatform==="All"){
+        setProducts(await FetchProducts(all_products_url));
+        setFilteredProducts(await FetchProducts(all_products_url));
+      }
+    } catch (error) {
+      console.log("Error fetching products", error);
+    }finally{
+      setLoading(false);
+    }
+  }
+  fetchproducts();
   }, [selectedPlatform]);
 
     if (loading) return <div className="loader"></div>;
@@ -194,7 +186,14 @@ const Sales = () => {
               <button className="platform-name" disabled>
                 Amazon
               </button>
-              <button className="platform-name" disabled>
+              <button className="platform-name"
+                style={{
+                  backgroundImage:
+                    selectedPlatform === "ebay"
+                      ? "linear-gradient(#1c59aa,#1c59aa)"
+                      : "",
+                }}
+                onClick={() => handlePlatformChange("ebay")} >
                 eBay
               </button>
               <button
@@ -239,7 +238,7 @@ const Sales = () => {
                       <div className="sales-circle-graph">
                         {/* Add graph components here */}
                         <SemiCircleSales
-                          percentage={85}
+                          percentage={0}
                           color="#0c1a3c"
                           strokeWidth={20}
                         />
@@ -287,9 +286,9 @@ const Sales = () => {
                   <thead>
                     <tr>
                       <th>IMAGE</th>
-                      <th>CATEGORY</th>
-                      <th>TITLE</th>
-                      <th>VENDOR</th>
+                      <th>{selectedPlatform==="shopify"?"PRODUCT TYPE":(selectedPlatform==="daraz"?"CATEGORY":"")}</th>
+                      <th >TITLE</th>
+                      <th>{selectedPlatform==="shopify"?"VENDOR":(selectedPlatform==="daraz"?"BRAND":"")}</th>
                       <th>PRICE</th>
                       <th>QTY</th>
                       <th>STATUS</th>
@@ -301,23 +300,33 @@ const Sales = () => {
                         <tr key={index}>
                           <td>
                             <img
-                              src={product.image?.src}
+                              src={ product.image?.src || product.thumbnail}
                               alt={product.title}
                               className="inventory-product-image"
                             />
                           </td>
-                          <td>{product.product_type}</td>
+                          <td>{product.product_type || product.category}</td>
                           <td>{product.title}</td>
-                          <td>{product.vendor}</td>
+                          <td>{product.vendor || product.brand}</td>
                           <td>{product.variants && product.variants.length>0 ?
                           (<p> RS. {product.variants[0].price} </p>):
                           (<p>${product.price}</p>)}</td>
                           <td>{product.variants && product.variants.length>0 ?
-                          (<p> {product.variants[0].sku} </p>):""}</td>
+                          (<p> {product.variants[0].inventory_quantity} </p>):(
+                            <p>{product.stock}</p>
+                          )}</td>
                           <td>
-                            <span className={product.variants[0].sku > 0 ? "in-stock" : "out-of-stock"}>
-                              {product.variants[0].sku > 0 ? "In Stock" : "Out of Stock"}
-                            </span>
+                          <span
+        className={
+            product.variants?.[0]?.inventory_quantity || product.stock> 0
+                ? "in-stock"
+                : "out-of-stock"
+        }
+    >
+        {product.variants?.[0]?.inventory_quantity ||product.stock> 0
+            ? "In Stock"
+            : "Out of Stock"}
+    </span>
                           </td>
                         </tr>
                       ))
@@ -358,16 +367,16 @@ const Sales = () => {
                         <tr key={index}>
                           <td>
                             <img
-                              src={product.thumbnail}
+                              src={(product.image) || (product.image?.src) || (product.thumbnail)}
                               alt={product.title}
                               className="inventory-product-image"
                             />
                           </td>
-                          <td>{product.category}</td>
+                          <td>{product.category||product.product_type}</td>
                           <td>{product.title}</td>
-                          <td>{product.brand}</td>
-                          <td>{product.price}</td>
-                          <td>{product.stock}</td>
+                          <td>{product.vendor || product.brand}</td>
+                          <td><p>RS. {product.price}</p></td>
+                           <td><p>{ product.inventory_quantity}{product.stock}</p></td>
                           <td id="platform-data">
                             <img
                               src={product.platform.logo}
@@ -377,13 +386,17 @@ const Sales = () => {
                             <h2>{product.platform.name}</h2>
                           </td>
                           <td>
-                            <span
-                              className={
-                                product.stock > 0 ? "in-stock" : "out-of-stock"
-                              }
-                            >
-                              {product.stock > 0 ? "In Stock" : "Out of Stock"}
-                            </span>
+                          <span
+        className={
+            product.inventory_quantity || product.stock> 0
+                ? "in-stock"
+                : "out-of-stock"
+        }
+    >
+        {product.inventory_quantity ||product.stock> 0
+            ? "In Stock"
+            : "Out of Stock"}
+    </span>
                           </td>
                         </tr>
                       ))

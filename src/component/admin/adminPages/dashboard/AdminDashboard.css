@@ -1,0 +1,223 @@
+th /* CSS for styling and setting structure for admin dashboard*/
+*{
+    padding:0px;
+    margin:0px;
+}
+.admin-dashboard-main-back{
+    /*background-color: yellow;*/
+    margin:10px;
+    border-radius: 10px;
+    width:98%;
+    height: 95%;
+    display:flex;
+   /* background-color: yellow;*/
+}
+#inventory-admin-table{
+    height:305px;
+    width:100%;
+}
+#inventory-admin-table .inventory-product-table tr td{
+    font-size: 14px;
+}
+#admin-table-profile{
+    width:50px
+}
+.admin-dashboard-main{
+    /*background-color: pink;*/
+    width:65%;
+    height: 100%;
+}
+.admin-dashboard-info-back{
+   /*background-color: rebeccapurple;*/
+    height: 35%;
+    
+}
+.admin-dashboard-info-back h1 ,.admin-graph-heading-back h1{
+    /*background-color: aqua;*/
+    font-weight: 600;
+    font-size: 20px;
+    padding: 8px 15px;
+    margin-bottom:5px;
+}
+.admin-dashboard-info{
+    /*background-color: yellow;*/
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    padding:5px;
+}
+.admin-cards{
+    background-image: linear-gradient(#113769, #0c1a3c);
+    box-shadow: 0px 10px 20px rgba(84, 84, 84, 0.287),
+        10px 0px 20px rgba(90, 89, 89, 0.253);    
+    color:white;
+    text-decoration: none;
+    height: 100px;
+    width:220px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.admin-cards:hover{
+    background-image: linear-gradient(#1a4b8c, #14285b);
+}
+.admin-cards label{
+    font-weight: 300;
+}
+.admin-cards h2{
+    font-size: 30px;
+}
+.admin-dashboard-user{
+    /*background-color: palevioletred;*/
+    height: 65%;
+}
+.inventory-product-table th:nth-child(2),
+.inventory-product-table td:nth-child(2) {
+  padding: 3px;
+  width: 20%;
+  /*background-color: green;*/
+}
+/*CSS styling for the graph section */
+.admin-user-graph-back{
+    /*background-color: aqua;*/
+    margin-left:10px;
+    width: 35%;
+    border-radius: 10px;
+    box-shadow: 0px 10px 20px rgba(84, 84, 84, 0.287),
+        10px 0px 20px rgba(90, 89, 89, 0.253);    
+}
+
+.admin-graph-heading-back{
+    /*background-color: aqua;*/
+}
+
+/*CSS for styling responsiveness*/
+@media (width < 770px){
+    
+.admin-dashboard-main-back{
+    width:97%;
+    height: 630px;
+    display:block;
+    overflow-x: scroll ;
+   /*background-color: yellow;*/
+}
+.admin-dashboard-main-back::-webkit-scrollbar{
+    display: none;
+}
+.admin-dashboard-main{
+    /*background-color: pink;*/
+    width:100%;
+    height: auto;
+    margin-bottom:15px;
+}
+#inventory-admin-table{
+    height:305px;
+    width:100%;
+    margin:10px 0px;
+}
+.admin-dashboard-info{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.admin-cards{
+    height: 100px;
+}
+.admin-user-graph-back{
+    /*background-color: aqua;*/
+    width: 100%;
+    
+}
+}
+/*CSS for styling responsiveness*/
+@media (width > 770px ) and (width <1082px){
+    
+    .admin-dashboard-main-back{
+        /*background-color: yellow;*/
+        width:97%;
+        height: 610px;
+        display:block;
+        overflow-x: scroll ;
+        /*background-color: yellow;*/
+    }
+    .admin-dashboard-main-back::-webkit-scrollbar{
+        display: none;
+    }
+    .admin-dashboard-main{
+        /*background-color: pink;*/
+        width:100%;
+        height: auto;
+        margin-bottom:15px;
+    }
+    #inventory-admin-table{
+        height:305px;
+        width:100%;
+        margin:10px 0px;
+        /*background-color: yellow;*/
+    }
+    .admin-dashboard-info{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .admin-cards{
+        height: 100px;
+    }
+    .admin-user-graph-back{
+        /*background-color: aqua;*/
+        width: 100%;
+        
+    }
+    }   
+/*##########################################*/
+@media (width > 1081px ) and (width <1282px){
+    .admin-cards{
+        width: 250px;
+        height: 120px;
+    }
+    #inventory-admin-table{
+        height:385px;
+        width:100%;
+        /*background-color: pink;*/
+    }
+    .admin-user-graph{
+        /*background-color: yellow;*/
+        height: 90%;
+    }
+} 
+/*##########################################*/
+@media (width > 1281px ) and (width <1367px){
+    .admin-cards{
+        width: 250px;
+        height: 120px;
+    }
+    #inventory-admin-table{
+        margin-top: 20px;
+        height:285px;
+        width:100%;
+        /*background-color: yellow;*/
+    }
+    .admin-user-graph{
+        /*background-color: yellow;*/
+        height: 90%;
+    }
+}
+/*##########################################*/
+@media (width > 1367px ) and (width <1444px){
+    .admin-cards{
+        width: 250px;
+        height: 120px;
+    }
+    #inventory-admin-table{
+        height:385px;
+        width:100%;
+       /* background-color: pink;*/
+    }
+    .admin-user-graph{
+        /*background-color: yellow;*/
+        height: 90%;
+    }
+}
+

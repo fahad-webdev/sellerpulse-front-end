@@ -1,89 +1,123 @@
 import React, { useState, useEffect } from "react";
 import "./ProductReviews.css";
 import { NavLink, useLocation, useParams } from "react-router-dom";
+import axios from "axios";
+import Sentiment from "sentiment";
 
 const ProductReviews = () => {
-  //hooks
   const [Products, setProducts] = useState(null);
   const [Loading, setLoading] = useState(false);
   const [Reviews, setReviews] = useState([]);
-  //hook from react router dom
-  const {id} = useParams();//we use useParams hook to get id
-  const location = useLocation();//useLocation hook will allow us to send desire credentials from one component to another through react router dom 
-  const {platform_name , platform_logo} = location.state || {};
-  //Variables
-  const shopify_logo = "../../../public/Shopify-Logo.png";
-  const daraz_logo = "../../../public/Daraz-logo-3.png";
-  const productUrl = `http://localhost:5000/api/auth/shopify-products/${id}`;
-                     
-  //const reviewUrl = `https://dummyjson.com/products/${id}?reviews`;
+  const [sentimentResult, setSentimentResult] = useState({
+    positivePercentage: 0,
+    negativePercentage: 0,
+    neutralPercentage: 0,
+  });
 
+  const { id } = useParams();
+  const location = useLocation();
+  const { platform_name, platform_logo } = location.state || {};
 
-  //Functions
-  console.log("product id:", id); //to see that whether id is passing successfully or not
+  const reviewUrl = `http://localhost:3000/api/v1/auth/shopify-product-reviews/${id}`;
+  const sentiment = new Sentiment();
 
-  const FetchSingleProducts = async () => {
-    //this function we used to fetch data from api
+  const url = `http://localhost:3000/api/v1/auth/products/${id}`;
+
+  //fetching product from backend url by id
+  const FetchSingleProduct = async () => {
     setLoading(true);
     try {
-      const response = await fetch(productUrl);
-      const data = await response.json();
-      setProducts(data);
-      console.log(data);
-      console.log("fetch product data", data);
+      const response = await axios.get(url, {
+        withCredentials: true,
+      });
+      console.log("Products Response: ", response.data);
+
+      if (response.data && Array.isArray(response.data)) {
+        const products = response.data.filter((product) => !product.error);
+        setProducts(products.length > 0 ? products[0] : null); 
+      } else {
+        setProducts(null);
+        console.error("Unexpected response format:", response.data);
+      }
     } catch (error) {
-      console.log("error loading products ", error);
-    }finally{
-        setLoading(false);
+      console.error("Error fetching product:", error);
+    } finally {
+      setLoading(false);
     }
   };
-
-  const FetchReviews = async () => {
- 
+  //fetching reviews for each product
+  const getSingleProductReviews = async () => {
     try {
-      const response = await fetch(reviewUrl);
-      const data = await response.json();
-      setReviews(data.reviews || []); //since reviews are stored in array so we need to fetch them in arrays
-      console.log("fetch product reviews ", data);
+      const response = await axios.get(reviewUrl, { withCredentials: true });
+      const reviews = response.data.reviews || [];
+      setReviews(reviews);
+      analyzeSentiments(reviews);
     } catch (error) {
-        console.log("error loading product reviews ", error);
+      console.log("error fetching product reviews", error);
     }
-}
+  };
+//sentiment analysis for product reviews
+  const analyzeSentiments = (reviews) => {
+    let positiveCount = 0;
+    let negativeCount = 0;
+    let neutralCount = 0;
+    let totalRating = 0;
+
+    reviews.forEach((review) => {
+      const result = sentiment.analyze(review.comment);
+      if (result.score > 0) {
+        positiveCount++;
+      } else if (result.score < 0) {
+        negativeCount++;
+      } else {
+        neutralCount++;
+      }
+      totalRating += review.rating;
+    });
+
+    const positivePercentage = (positiveCount / reviews.length) * 100 || 0;
+    const negativePercentage = (negativeCount / reviews.length) * 100 || 0;
+    const neutralPercentage = (neutralCount / reviews.length) * 100 || 0;
+    const averageRating = reviews.length > 0 ? (totalRating / reviews.length).toFixed(1) : 0;
+
+    setSentimentResult({
+      positivePercentage,
+      negativePercentage,
+      neutralPercentage,
+      averageRating,
+    });
+  };
 
   useEffect(() => {
-    FetchSingleProducts();
-    FetchReviews();
+    const fetchProduct = async () => {
+      await FetchSingleProduct();
+    };
+    fetchProduct();
+    getSingleProductReviews();
   }, [id]);
-  if (!Products) return <div></div>;
+
   if (Loading) return <div className="loader"></div>;
+
+  if (!Products) return <div>No product found</div>;
 
   return (
     <div className="main-product-reviews-back">
-      {/*Product Header page code*/}
       <div className="product-main-overview-back">
         <div className="product-main-overview">
           <h3>Product Reviews</h3>
         </div>
-        <NavLink
-          to="/Navbar/Products"
-          className="back-btn platform-filter-btn"
-          style={{}}
-        >
+        <NavLink to="/Navbar/Products" className="back-btn platform-filter-btn">
           Back
         </NavLink>
       </div>
       <div className="main-product-reviews">
         <div className="productreviews-image-back">
           <h3>Image</h3>
-          <img
-            src={Products.image?.src}
-            alt=""
-            className="productreviews-image"
-          />
+          <img src={Products.image?.src || Products.thumbnail} alt="Product" className="productreviews-image" />
           <h2>
             Platform:
             <h1>
-              <img src={platform_logo} alt="" className="platform-logo" />
+              <img src={platform_logo} alt="Platform Logo" className="platform-logo" />
               {platform_name}
             </h1>
           </h2>
@@ -92,37 +126,54 @@ const ProductReviews = () => {
           <h3>Details</h3>
           <div className="productreviews-details">
             <h2>Title:</h2>
-           <div className="title-rating">
-           <p>{Products.title}</p> <p><img src="../../../public/star.png" alt="" className="rating-logo" />{Products.rating} </p>
-           </div>
+            <div className="title-rating">
+              <p>{Products.title || "No Title"}</p>
+              <p>
+                <img src="../../../public/star.png" alt="Rating" className="rating-logo" />
+                {Products.rating || sentimentResult.averageRating || "N/A"}
+              </p>
+            </div>
             <h2>Description:</h2>
-            <p>{Products.body_html}</p>
+            <p>{Products.body_html || Products.description}</p>
             <h2>Category:</h2>
-            <p>{Products.product_type}</p>
+            <p>{Products.product_type || Products.category}</p>
             <h2>Vendor:</h2>
-            <p>{Products.vendor}</p>
+            <p>{Products.vendor || Products.brand}</p>
             <h2>Price:</h2>
-            <p>RS.{Products.variants[0].price}</p>
+            <p>RS. {Products.variants?.[0]?.price || Products.price || "N/A"}</p>
             <h2>QTY:</h2>
-            <p>{Products.variants[0].sku}</p>
+            <p>{Products.variants?.[0]?.inventory_quantity || Products.stock || "N/A"}</p>
           </div>
         </div>
         <div className="productreviews-reviews-back">
-          <h3>Reviews</h3>
+          <div className="sentiment-analysis-back">
+            <h3>Reviews</h3>
+            <div className="sentiment-analysis">
+              <label id="positive" htmlFor="">
+                Positive: {sentimentResult.positivePercentage.toFixed(2)}%
+              </label>
+              <label id="neutral" htmlFor="">
+                Neutral: {sentimentResult.neutralPercentage.toFixed(2)}%
+              </label>
+              <label id="negative" htmlFor="">
+                Negative: {sentimentResult.negativePercentage.toFixed(2)}%
+              </label>
+            </div>
+          </div>
           <div className="productreviews-reviews">
             <ul>
               {Reviews.length > 0 ? (
                 Reviews.map((review, index) => (
                   <li key={index}>
                     <p>
-                      <h5>{review.reviewerName}</h5>
+                      <h5>{review.reviewer}</h5>
                       {review.comment}
                     </p>
-                   <div className="title-rating">
-                   rating:
-                   <img src="../../../public/star.png" alt="" className="rating-logo" />
-                    {review.rating}
-                   </div>
+                    <div className="title-rating">
+                      Rating:
+                      <img src="../../../public/star.png" alt="Rating" className="rating-logo" />
+                      {review.rating}
+                    </div>
                   </li>
                 ))
               ) : (

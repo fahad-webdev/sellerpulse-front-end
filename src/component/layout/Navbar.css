@@ -119,84 +119,101 @@ background-color: rgba(16, 66, 132, 0.604);
     width:25px;
     height: auto;
     border-radius: 50%;
-}
-.drop-down-profile-back{
-    height:calc(100% - 40px);
-    position:fixed;
-    right:0px;
-    background-image: linear-gradient(to left, rgb(2, 8, 16) , #00091f);
-    transition: 0.3s ease-in-out;
-    overflow: hidden;
-    z-index: 1;
-    border-bottom-right-radius: 10px;
-}
-.dropdown-profile{
-    margin-top:30px;
-    /*background-color: aqua;*/
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.drop-profile-pic{
-    width:100px;
-    height: auto;
-    border-radius: 50%;
-    margin:10px 0px;
-}
-.drop-profile-info{
-    /*background-color: rebeccapurple;*/
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width:90%;
-    margin:10px 0px;
-}
-.drop-profile-info .drop-profile-input{
-    width:100%;
-    font-size: 14px;
-    padding:5px 0px;
-    padding-left: 2px;
-    background-color: transparent;
-    color:rgb(213, 213, 213);
-    border: none; 
-    margin: 3px auto;
-    text-align: center;
-    border-radius: 5px;
-    outline-color:   rgb(40, 165, 255);
-}
-.drop-profile-info  #drop-profile-email{
-    font-size: 11px;
-    text-align: left;
-}
-.drop-update-btn{
-    width:80px;
-    font-size: 11px;
-    padding:5px;
-    border-radius: 5px;
-    border: none;
-    color:white;
-    font-weight: 400;
-    background-image: linear-gradient( rgb(59, 158, 59), rgb(31, 86, 31));
-    cursor: pointer;
-    transition: 0.3s;
-}
-.drop-update-btn:hover{
-    box-shadow: 0 0 10px rgb(118, 118, 118);
-}
+}/*background-image: linear-gradient(to left, rgb(2, 8, 16) , #00091f);*/
 /*content container that contain sidebar and main container */
 .content-container{
+    /*background-color: yellow;*/
+
     box-sizing: border-box;
     display:flex;
+    justify-content: space-between;
     height:100%;
     width:100%;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
     /*background-color:  rgba(222, 222, 222, 0.9) ;*/
 }
-/*side bar*/
+/*User profile sidebar */
+.user-profile-sidebar-back{
+    background-image: linear-gradient(to left, rgb(2, 8, 16) , #00091f);
+    width: 180px;
+    transition: 0.3s;
+    margin-left: 20px;
+    z-index: 1;
+    border-bottom-right-radius: 10px;
+    overflow: hidden;
+}
+.user-profile-info-back{
+    visibility: visible;
+    margin-top: 30px;
+    height: auto;
+    /*background-color: aqua;*/
+    display: flex;
+    flex-direction: column;
+}
+.user-profile-info{
+    margin-top: 10px;
+    /*background-color: yellow;*/
+    height: 200px;
+    transition: 0.3s;
+}
+.user-profile-info{
+    display:flex ;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+.user-profile-input{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 300;
+    visibility: visible;
+    background-color: transparent;
+    border:none;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 14px;
+    margin:5px 5px;
+    text-align: center;
+    color:white;
+    outline-color: rgb(69, 148, 228);
+}
+.user-profile-pic-back{
+    /*background-color: yellow;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.user-profile-pic{
+    width:100px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.user-profile-btn-back{
+    margin-top: 20px;
+    background-color: pink;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+#confirm-btn{
+    margin-left:-70px;
+}
+#cancel-btn{
+    margin-right: -70px;
+}
+.user-profile-btn{
+    position: absolute;
+    border:none;
+    padding:5px;
+    background-image: linear-gradient(rgb(3, 109, 3),rgb(44, 140, 44));
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+/*side bar for dashboard options */
 .sidebar{
     background-image: linear-gradient(to right, rgb(2, 8, 16) , #00091f);
     /*background-image: linear-gradient(100deg, rgb(6, 27, 56) 70%, rgb(2, 8, 16) 70%);*/
@@ -231,6 +248,7 @@ background-color: rgba(16, 66, 132, 0.604);
     transition: 0.3s;
     cursor:pointer;
     text-decoration: none;
+    background-color: transparent;
     /*border-bottom:1px solid rgba(128, 128, 128, 0.794);*/
 }
 .menu-options-active{
@@ -376,8 +394,9 @@ background-color: rgba(16, 66, 132, 0.604);
 }
 /*content where we render other components styling*/
 .content{
+    margin-left:-20px;
     background-color: white;
-    width: 92%;
+    width: 92.5%;
     height:92%;
     margin: auto 0px;
     transition: 0.3s;

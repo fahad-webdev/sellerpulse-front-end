@@ -5,25 +5,25 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 const signup = () => {
   const [formValues, setFormValues] = useState({
-    username:"",
+    name: "",
     email: "",
     password: "",
   });
   const [formErrors, setFormErrors] = useState({
-    username:"",
+    name: "",
     email: "",
     password: "",
   });
 
-  const [message , setmessage] = useState({
-    success:false,
-    danger:false,
-    alert:false,
+  const [message, setmessage] = useState({
+    success: false,
+    danger: false,
+    alert: "",
   });
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const [showError, setShowError] = useState({
-    username:false,
+    name: false,
     email: false,
     password: false,
   });
@@ -32,10 +32,10 @@ const signup = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues({ 
-      ...formValues,//for previous state value
-       [name]: value //this will make value change dynamically
-      });
+    setFormValues({
+      ...formValues, //for previous state value
+      [name]: value, //this will make value change dynamically
+    });
   };
 
   const togglePasswordVisibility = () => {
@@ -45,31 +45,30 @@ const signup = () => {
   const validate = () => {
     let errors = {};
     let showError = {
-      username:false,
+      name: false,
       email: false,
       password: false,
     };
     //showing error for empty name field
-    if(!formValues.username){
-      errors.username = <div className="alert">Name is required</div>;
-      showError.username = true;
+    if (!formValues.name) {
+      errors.name = <div className="alert">Name is required</div>;
+      showError.name = true;
     }
 
     //showing error for empty email field
-     if (!formValues.email) {
+    if (!formValues.email) {
       errors.email = <div className="alert">E-mail is required</div>;
       showError.email = true;
     } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
       errors.email = <div className="alert">E-mail address is invalid</div>;
       showError.email = true;
     }
-    
+
     //showing error for empty password field
     if (!formValues.password) {
       errors.password = <div className="alert">Password is required</div>;
       showError.password = true;
     }
-    
 
     setFormErrors(errors);
     setShowError(showError);
@@ -80,43 +79,49 @@ const signup = () => {
     e.preventDefault();
     if (validate()) {
       try {
-        const URL = "http://localhost:5000/api/auth/register";
-        const response = await axios.post(URL,formValues,
+        const URL = "http://localhost:3000/api/v1/users/signup";
+        const response = await axios.post(
+          URL,
+          formValues,
           {
-            headers:{
-              "Content-Type":"application/json",
-            }
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true, // For cookies
           }
         );
-        if(response.ok){//response is ok=true?
-          setFormValues({
-            username:"",
-            email:"",
-            password:"",
-          });
-        }
-        console.log(response);
-        setmessage({success:true});
-       // alert("Registration successful");
-        
+  
+        // If the signup is successful, clear the form
+        setFormValues({
+          name: "",
+          email: "",
+          password: "",
+        });
+        console.log("Registration successful", response);
+        setmessage({ success: true ,danger: false ,alert:"Registration Successfull"});
       } catch (error) {
-        setmessage({success:false});
-        console.log("Registration failed", error);
+        // Check for duplicate email error
+        if (error.response && error.response.status === 409) {
+          return setmessage({alert:"email is already registered", success:false,danger:true});
+        }
+  
+        // Handle other errors
+        setmessage({alert:"Registration Failed", success:false,danger:true});
       }
-      console.log("Form submitted successfully", formValues);
     }
   };
+  
 
   useEffect(() => {
-    if (showError.email || showError.password ) {
+    if (showError.email || showError.password) {
       const timer = setTimeout(() => {
         setFormErrors({
-          username: "",
+          name: "",
           email: "",
           password: "",
         });
         setShowError({
-          username: false,
+          name: false,
           email: false,
           password: false,
         });
@@ -130,16 +135,47 @@ const signup = () => {
     <>
       <div className="signup-background"></div>
       <div className="signup-main">
-        {/*Alert for product creation*/}
-    {message.success &&  <div className="shopify-alert-back" id="signup-alert-back">
-    <img src="../../../public/tick.png" alt="" className="alert-logo" />
-    <h3 className="shopify-alert">
-      <strong>Success! </strong>
-      Registration successful
-    </h3>
-    <img src="../../../public/close.png" alt="" className="close-logo" onClick={()=>{setmessage(false);navigate("/Login");
-}}/>
-  </div>}
+        {/*Alert for signup creation*/}
+        {message.success && (
+          <div className="shopify-alert-back" id="signup-alert-back">
+            <img src="../../../public/tick.png" alt="" className="alert-logo" />
+            <h3 className="shopify-alert">
+              <strong>Success! </strong>
+              {message.alert}
+            </h3>
+            <img
+              src="../../../public/close.png"
+              alt=""
+              className="close-logo"
+              onClick={() => {
+                setmessage(false);
+                navigate("/Login");
+              }}
+            />
+          </div>
+        )}
+        {/*Alert for signup failed*/}
+        {message.danger && (
+          <div className="shopify-alert-back" id="signup-danger-back">
+            <img
+              src="../../../public/warning.png"
+              alt=""
+              className="alert-logo"
+            />
+            <h3 className="shopify-alert">
+              <strong>Sorry! </strong>
+              {message.alert}
+            </h3>
+            <img
+              src="../../../public/close-danger.png"
+              alt=""
+              className="close-logo"
+              onClick={() => {
+                setmessage(false);
+              }}
+            />
+          </div>
+        )}
         <div className="signup-form-main">
           <div className="signup-image-back">
             <div className="signup-about">
@@ -154,41 +190,22 @@ const signup = () => {
           </div>
           <div className="signup-form-back">
             <form className="signup-form" onSubmit={handleSubmit}>
-              <h2>Signup</h2>
+              <h1>Signup</h1>
               <table className="signup-table">
                 <tbody>
-                  <tr className="signup-btn-back">
-                    <td>
-                      <button
-                        className="signup-btn"
-                        id="signup-btn"
-                        type="button"
-                        onClick={() => {
-                          console.log("Google signup clicked");
-                        }}
-                      >
-                        <img
-                          src="/public/google-icon.png"
-                          alt="Google Icon"
-                          className="google-icon"
-                        />{" "}
-                        Continue with Google
-                      </button>
-                    </td>
-                  </tr>
                   <tr>
                     <td>
                       <label className="signup-label">Name</label>
                       <input
                         type="text"
-                        name="username"
+                        name="name"
                         className="signup-input"
                         placeholder="Enter your name"
-                        value={formValues.username}
+                        value={formValues.name}
                         onChange={handleInputChange}
                       />
-                      {formErrors.username && (
-                        <p className="error">{formErrors.username}</p>
+                      {formErrors.name && (
+                        <p className="error">{formErrors.name}</p>
                       )}
                     </td>
                   </tr>
@@ -239,7 +256,7 @@ const signup = () => {
                   </tr>
                   <tr className="signup-btn-back">
                     <td>
-                      <button  className="signup-btn" type="submit">
+                      <button className="signup-btn" type="submit">
                         signup
                       </button>
                     </td>
@@ -257,7 +274,8 @@ const signup = () => {
                   </tr>
                   <tr className="signup-register">
                     <td>
-                      Already have an account? <NavLink to="/Login">Login</NavLink>
+                      Already have an account?{" "}
+                      <NavLink to="/Login">Login</NavLink>
                     </td>
                   </tr>
                 </tbody>

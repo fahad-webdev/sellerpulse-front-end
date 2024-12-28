@@ -1,15 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
-
-const data = [
-  { name: 'Shopify', value: 400 },
-  { name: 'Daraz', value: 300 },
-  { name: 'Amazon', value: 300 },
-  { name: 'eBay', value: 200 },
-];
-
-// Calculate the total value
-const totalValue = data.reduce((acc, cur) => acc + cur.value, 0);
+import axios from 'axios';
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
@@ -49,16 +40,47 @@ const renderActiveShape = (props) => {
       />
       <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
       <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${value}`}</text>
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`Count: ${value}`}</text>
       <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-        {`(Rate ${(percent * 100).toFixed(2)}%)`}
+        {`(${(percent * 100).toFixed(2)}%)`}
       </text>
     </g>
   );
 };
 
 const TotalProduct = () => {
+  const [data, setData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const fetchProductsForPlatform = async (url) => {
+    try {
+      const response = await axios.get(url, { withCredentials: true });
+      return response.data.products.length;
+    } catch (error) {
+      console.error(`Error fetching products from ${url}:`, error);
+      return 0;
+    }
+  };
+
+  const fetchAllPlatformsData = async () => {
+    const shopify_url = `http://localhost:3000/api/v1/auth/shopify-products`;
+    const daraz_url = `http://localhost:3000/api/v1/auth/daraz-products`;
+    const ebay_url = `http://localhost:3000/api/v1/auth/ebay-products`;
+
+    const platformData = await Promise.all([
+      fetchProductsForPlatform(shopify_url).then((count) => ({ name: 'Shopify', value: count })),
+      fetchProductsForPlatform(daraz_url).then((count) => ({ name: 'Daraz', value: count })),
+      fetchProductsForPlatform(ebay_url).then((count) => ({ name: 'eBay', value: count })),
+    ]);
+
+    setData(platformData);
+  };
+
+  useEffect(() => {
+    fetchAllPlatformsData();
+  }, []);
+
+  const totalValue = data.reduce((acc, cur) => acc + cur.value, 0);
 
   const onPieEnter = useCallback((_, index) => {
     setActiveIndex(index);
@@ -81,7 +103,7 @@ const TotalProduct = () => {
         />
         {/* Add a text element to display the total value */}
         <text x="50%" y="90%" textAnchor="middle" fill="#333" fontSize={16}>
-          {`Total: ${totalValue}`}
+          {`Total Products: ${totalValue}`}
         </text>
       </PieChart>
     </ResponsiveContainer>

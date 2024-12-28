@@ -386,13 +386,11 @@ const Home = () => {
                     />
                   </div>
                   <h3>Tania Saleem</h3>
-                  <h5>Back-end Developer</h5>
+                  <h5>Documentation Specialist</h5>
                 </div>
                 <div className="team-card-detail">
                   <p>
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                    Recusandae temporibus assumenda quaerat rerum cupiditate
-                    possimus!
+                  As the Documentation Specialist for SellerPulse, I create clear, concise content to empower our team and enhance the user experience. I’m passionate about making information accessible and user-friendly.
                   </p>
                 </div>
                 <div className="social-media-link-back">

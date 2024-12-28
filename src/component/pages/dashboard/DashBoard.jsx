@@ -1,92 +1,57 @@
 import React, { useEffect, useState } from "react";
 import "./DashBoard.css";
+import axios from 'axios';
 import CountUp from "react-countup";
 import { Outlet, NavLink } from "react-router-dom";
 
 const DashBoard = () => {
   const [graphopt, setGraphopt] = useState("close");
   const [topProducts, setTopProducts] = useState([]);
-  const [productsCount, setProductsCount] = useState(0);
-  const [totalSales, setTotalSales] = useState(0);
-  const [totalOrders, setTotalOrders] = useState(0);
+  const [TotalProduct ,setTotalProduct] = useState(0);
   const [loading, setLoading] = useState(false);
 
   const toggleGraphopt = () => {
     setGraphopt(graphopt === "close" ? "open" : "close");
   };
 
-  const fetchProducts = async (url) => {//this function is to fetch no of products and products data
-    const response = await fetch(url);
-    const data = await response.json();
-    return { products: data.products, count: data.products.length };
-  };
-
-  const fetchCarts = async () => {//this function is to fetch no of orders in the carts 
-    const response = await fetch("https://dummyjson.com/carts");
-    const data = await response.json();
-    return data.carts;
-  };
-
-  const productCount = async () => {
+  //functions
+  //to fetch all connected platform products
+  const FetchAllProducts = async () => {
     setLoading(true);
     try {
-      const urls = [// this is the array of urls in which we define pr add our urls 
-        "https://dummyjson.com/products/search?q=phone",
-        "https://dummyjson.com/products/search?q=all",
-      ];
-
-      const [productsData, cartsData] = await Promise.all([
-        Promise.all(urls.map((url) => fetchProducts(url))),
-        fetchCarts(),
-      ]);
-
-      // Calculate total product count
-      const totalCount = productsData.reduce(
-        (acc, { count }) => acc + count,
-        0
-      );
-      setProductsCount(totalCount);
-
-      // Calculate total orders and sales
-      let totalSales = 0;
-      let totalOrders = 0;
-
-      cartsData.forEach((cart) => {
-        cart.products.forEach((product) => {
-          totalSales += product.price * product.quantity;
-        });
-        totalOrders += 1;
-      });
-
-      setTotalSales(totalSales);
-      setTotalOrders(totalOrders);
+      const url = `http://localhost:3000/api/v1/auth/all-products`;
+      const response = await axios.get(url, { withCredentials: true });
+      
+      if (response.data && response.data.products) {
+        const products = response.data.products;
+  
+        console.log("Total number of products:", products.length);
+  
+        // Set the total number of products
+        setTotalProduct(products.length);
+  
+        // Assuming top 3 products are based on some criteria like highest sales
+        const topSellingProducts = products
+          .sort((a, b) => b.sales - a.sales) // Example sort based on sales
+          .slice(0, 3); // Take the top 3
+  
+        setTopProducts(topSellingProducts);
+      } else {
+        console.error("No products found from the API.");
+        setTopProducts([]);
+        setTotalProduct(0);
+      }
     } catch (error) {
-      console.error("Error fetching product or cart data:", error);
+      console.error("Error fetching products:", error);
     } finally {
       setLoading(false);
     }
   };
-
+  
   useEffect(() => {
-    const fetchTopSellingProducts = async () => {
-      setLoading(true);
-      try {
-        const { products } = await fetchProducts(
-          "https://dummyjson.com/products/search?q=phone"
-        );
-        const bestSellers = products.slice(0, 3);
-        setTopProducts(bestSellers);
-      } catch (error) {
-        console.error("Error fetching top-selling products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTopSellingProducts();
-    productCount();
-  }, []);
-
+    FetchAllProducts();
+  }, [])
+  
   if (loading) return <div className="loader"></div>;
 
   return (
@@ -103,7 +68,7 @@ const DashBoard = () => {
               id="total-order"
             >
               <p>Total no of order</p>
-              <h1><CountUp start={0} end={totalOrders} /></h1> {/* Display the total number of orders */}
+              <h1><CountUp start={0} end={10} /></h1> {/* Display the total number of orders */}
             </NavLink>
             <NavLink
               to="/Navbar/Products"
@@ -112,7 +77,7 @@ const DashBoard = () => {
             >
               <p>Total no of product</p>
               <h1>
-                <CountUp start={0} end={productsCount} />
+                <CountUp start={0} end={TotalProduct} />
               </h1> {/* Display the total number of products */}
             </NavLink>
             <NavLink
@@ -122,7 +87,7 @@ const DashBoard = () => {
             >
               <p>Total sales</p>
               <h1>
-                <label>Rs.</label><CountUp start={0} end={totalSales} /> {/* Display the total sales */}
+                <label>Rs.</label><CountUp start={0} end={10} /> {/* Display the total sales */}
               </h1>
             </NavLink>
         
@@ -181,7 +146,7 @@ const DashBoard = () => {
             {topProducts.map((product) => (
               <div key={product.id} className="dash-product-card-back">
                 <img
-                  src={product.thumbnail}
+                  src={product.thumbnail || product.image}
                   alt={product.title}
                   className="dash-product-card-img"
                 />
@@ -205,7 +170,7 @@ const DashBoard = () => {
                   <div className="sub-details">
                     <label>Platform:</label>
                     <p className="detail-input" id="">
-                      DummyJSON
+                      {product.platform.name}
                     </p>
                   </div>
                 </div>
